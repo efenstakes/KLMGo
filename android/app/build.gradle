@@ -149,6 +149,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('klmgo.keystore')
+            storePassword 'klmgo123'
+            keyAlias 'klm'
+            keyPassword 'klmgo123'
+        }
     }
     buildTypes {
         debug {
