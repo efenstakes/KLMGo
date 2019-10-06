@@ -253,7 +253,13 @@ const theme = {
     ...DefaultTheme.colors,
     primary: primary_color,
     accent: secondary_color,
-  }
+  },
+  fonts: {
+    regular: 'Longhand',
+    medium: 'Longhand',
+    light: 'Now',
+    thin: 'Verdana',
+  },
 }
 
 const App = () => {
