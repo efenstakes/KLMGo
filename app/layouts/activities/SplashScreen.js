@@ -43,6 +43,16 @@ class SplashScreenActivity extends React.Component {
             style={ styles.klm_image }
           />
 
+        {/* <Paragraph style={{ fontFamily: 'verdana' }}>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+        </Paragraph>
+        <Paragraph style={{ fontFamily: 'noa' }}>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+        </Paragraph>
+        <Paragraph style={{ fontFamily: 'longhand' }}>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+        </Paragraph> */}
+
         <ActivityIndicator animating={true} color='#003145'
               size='40' style={ styles.klm_spinner } />  
 
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
   title_one: {
     marginTop: '16%',
     color: 'black',
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold'
   },
 
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     resizeMode: 'stretch',
     marginTop: '4%',
-    opacity: 0.5
+    opacity: 0.9
   },
 
   klm_brandtext: {

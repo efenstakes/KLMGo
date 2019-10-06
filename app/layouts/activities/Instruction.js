@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
 
   instruction_text: {
     fontSize: 16,
-    fontFamily: 'Verdana',
+    fontFamily: 'verdana',
     lineHeight: 32,
     letterSpacing: 1,
     marginVertical: 8

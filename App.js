@@ -255,10 +255,10 @@ const theme = {
     accent: secondary_color,
   },
   fonts: {
-    regular: 'Longhand',
-    medium: 'Longhand',
-    light: 'Now',
-    thin: 'Verdana',
+    regular: 'noa',
+    medium: 'noa',
+    light: 'verdana',
+    thin: 'verdana',
   },
 }
 
