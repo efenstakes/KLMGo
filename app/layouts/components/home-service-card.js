@@ -9,34 +9,51 @@ function HomeServiceCard({ service, onServiceClick }) {
     return (
 
       <TouchableHighlight
+        underlayColor={'white'}
         onPress={ ()=> onServiceClick(service) }>
       
         <Card
           containerStyle={[ styles.service_card, { overflow: 'hidden' }]}
           featuredSubtitle={ service.title }
           featuredSubtitleStyle={{ position: 'absolute', bottom: 8, left: 8 }}
-          image={require('../../assets/images/klm-1.jpg')}
+          // image={ service.image }
+          // require('../../assets/images/klm-1.jpg')
           >
-          <Paragraph style={{marginBottom: 10}}>
-            { service.woo_text }
-          </Paragraph>
-  
-  
-          <View style={{ flex: 1, flexDirection: 'row' }}>
 
-            <View style={{ flex: 5 }}></View>
-            <View style={{ flex: 4 }}>
+            <View>
 
-              <Button
-                  // icon={<Icon name='code' color='#ffffff' />}
-                  buttonStyle={ styles.cta_button }
-                  title='Explore Now' type='outline'
-                  onPress={ ()=> onServiceClick(service) } 
-              />
+                {/* <Image
+                    source={ service.image }
+                    style={{ height: 160, width: '110%', left: -16, flexGrow: 1, alignSelf: 'stretch' }} // , rotation: '180deg'
+                /> */}
+                
+                <Image
+                    source={ service.image }
+                    style={{ height: 176, width: '116%', left: -16, alignSelf: 'stretch' }} 
+                />
+
+                <Paragraph style={{ marginTop: 8, marginBottom: 16 }}>
+                  { service.woo_text }
+                </Paragraph>
+  
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                  <View style={{ flex: 5 }}></View>
+                  <View style={{ flex: 4 }}>
+
+                    <Button
+                        // icon={<Icon name='code' color='#ffffff' />}
+                        buttonStyle={ styles.cta_button }
+                        title='Explore Now' type='outline'
+                        onPress={ ()=> onServiceClick(service) } 
+                    />
+
+                  </View>
+
+                </View>
 
             </View>
-
-          </View>
+          
   
         </Card>
         
@@ -75,7 +92,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 24, 
         // borderBottomRightRadius: 8, 
-        marginBottom: 8
+        // marginBottom: 8
     }
 
 })

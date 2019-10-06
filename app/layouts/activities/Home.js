@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, ScrollView, AsyncStorage, StyleSheet, Image } from 'react-native'
+import { View, ScrollView, AsyncStorage, StyleSheet, Image, ImageBackground } from 'react-native'
 import { Paragraph, Button, Text } from 'react-native-paper'
+
+import { Card, Icon } from 'react-native-elements'
 
 // components
 import HomeServiceCard from '../components/home-service-card'
@@ -24,19 +26,23 @@ class HomeActivity extends React.Component {
       services: [
         { 
           name: 'luggage', act_name: 'luggage', title: 'Luggage',
-          woo_text: 'Want to ship heavy luggage?' 
+          woo_text: 'Travelling with heavy luggage or want to ship heavy luggage?',
+          image: require('../../assets/images/plane_wing.jpg') 
         },
         { 
           name: 'babies', act_name: 'umnr', title: 'Babies',
-          woo_text: 'Want to know how to book for babies?' 
+          woo_text: 'Book for an unaccompanied minor or get instructions of how to book for babies here.',
+          image: require('../../assets/images/baby-cropped.jpg') 
         },
         { 
           name: 'pets', act_name: 'pet', title: 'Pets',
-          woo_text: 'Want to know how to book for pets?' 
+          woo_text: 'Travelling the world with pets has never been this easy. Book or get instructions here.',
+          image: require('../../assets/images/pets.jpg') 
         },
         { 
           name: 'group', act_name: 'group', title: 'Groups',
-          woo_text: 'Want to know how to book and travel as a group?' 
+          woo_text: 'Want to know how to book and travel as a group?',
+          image: require('../../assets/images/friends.jpg')
         }
       ]
 
@@ -45,7 +51,7 @@ class HomeActivity extends React.Component {
     this.viewServiceInstructions = this.viewServiceInstructions.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // AsyncStorage.setItem('testkeya', 'some string here')
   }// componentWillMount() { .. }
     
@@ -53,19 +59,52 @@ class HomeActivity extends React.Component {
     return (
       <ScrollView>
 
+        {/* <Card
+            containerStyle={{ 
+                  overflow: 'hidden', borderBottomRightRadius: 16,
+                  borderBottomLeftRadius: 16
+                }}
+            featuredSubtitle={ 'Check Out Our New Services' }
+            featuredSubtitleStyle={{ position: 'absolute', bottom: 8, left: 8 }}
+            image={ require('../../assets/images/klm-1.jpg') }
+          /> */}
+
+        <ImageBackground
+                source={ require('../../assets/images/klm-1.jpg') }
+                style={{ 
+                  width: '100%', height: 176, 
+                  borderRadius: 50,
+                  borderBottomLeftRadius: 16, 
+                  borderBottomRightRadius: 16, 
+                  justifyContent: 'flex-end',
+                  marginBottom: 24
+                }} 
+            >
+            <Text style={{ 
+                    marginBottom: 16, marginLeft: 16, fontSize: 24,
+                    fontWeight: 'bold', color: 'white' 
+                  }}> 
+              {/* Travel the world with us */}
+              Travel the world with a trusted partner
+            </Text>
+        </ImageBackground>
+
         {/* <Image
                 source={ require('../../assets/images/container_background.png') }
                 style={{ height: '10%', width: '100%', zIndex: auto }} // , rotation: '180deg'
-            />
+            /> */}
 
-        <View style={{ display: none, zIndex: 10, top: 24, left: 24, right: 24, height: '24%', backgroundColor: 'red', color: 'yellow' }}>
+        {/* <View style={{ display: none, zIndex: 10, top: 24, left: 24, right: 24, height: '24%', backgroundColor: 'red', color: 'yellow' }}>
             
         </View> */}
 
         
         {
           this.state.services.map((service, index)=> {
-            return <HomeServiceCard key={index} service={service} onServiceClick={this.viewServiceInstructions} />
+            return <HomeServiceCard key={index} 
+                        service={service} 
+                        onServiceClick={this.viewServiceInstructions} 
+                      />
           })
         }
 
