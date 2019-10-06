@@ -5,6 +5,8 @@ import { Paragraph, Button, List, Text, ProgressBar, Colors } from 'react-native
 import { CheckBox, Input  } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
 
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
+ 
 // components
 import UserDetailForm from '../components/user-detail-form'
 import GroupBookingForm from '../components/group-booking-form'
@@ -12,6 +14,7 @@ import BabyBookingForm from '../components/baby-booking-form'
 import LuggageBookingForm from '../components/luggage-booking-form'
 import PetBookingForm from '../components/pet-booking-form'
 
+import BookingSuccessOverlayModal from '../components/booking-success-overlay'
 
 // book
 class BookingActivity extends React.Component {
@@ -21,6 +24,7 @@ class BookingActivity extends React.Component {
     super(props)
 
     this.state = {
+      show_overlay: false, 
 
       user: { name: '', email: '', phone: '' },
       baby: {
@@ -69,6 +73,8 @@ class BookingActivity extends React.Component {
     this.isUserValid = this.isUserValid.bind(this)
     this.isDestinationValid = this.isDestinationValid.bind(this)
     this.isBookingsValid = this.isBookingsValid.bind(this)
+    
+    this.hideModal = this.hideModal.bind(this)
   }// constructor(props) { .. }
 
   booking_forms() {
@@ -111,7 +117,8 @@ class BookingActivity extends React.Component {
               onChangeText={text => this.setState({ destination: text })}
               leftIcon={{ type: 'font-awesome', name: 'globe' }}
               errorMessage={ 
-                  this.state.errors.destination
+                  this.state.errors.destination.length > 0 &&  
+                  this.state.errors.destination.join('\n')
               }
               errorStyle={ styles.error_text }
           />
@@ -145,7 +152,22 @@ class BookingActivity extends React.Component {
             }}
             onDateChange={(date) => { this.setState({ travel_date: date}) } }
           />
-          <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}> { this.state.errors.travel_date } </Text>
+          {/* <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}> { this.state.errors.travel_date } </Text> */}
+          {/* {
+            this.state.errors.travel_date.map((error)=> {
+              return (
+                  <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}>
+                    { error }
+                  </Text> 
+              )
+            })
+          } */}
+          {
+            this.state.errors.travel_date.length > 0 && 
+            <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}>
+              { this.state.errors.travel_date[0] }
+            </Text> 
+          }
         </View>
         
         {/** date the travel is */}
@@ -213,6 +235,14 @@ class BookingActivity extends React.Component {
         {/** cta button - show at last step */}
         { cta_btn }
         
+        
+        {/** overlay modal to show when user booking is successful */}
+        <BookingSuccessOverlayModal 
+              show_overlay={this.state.show_overlay} 
+              hideModal={ this.hideModal } 
+          ></BookingSuccessOverlayModal>
+        {/** overlay modal to show when user booking is successful */}
+         
 
       </ScrollView>
     )
@@ -263,6 +293,18 @@ class BookingActivity extends React.Component {
     
     if ( property == 'is_returning' ) {
       baby[property] = !baby[property]
+    } else if ( property == 'number' ) {
+    
+      if( value == 'minus' ) {
+
+        if( baby['number'] > 1 ) {
+          baby['number'] = (baby['number'] - 1)
+        } 
+
+      } else {
+        baby['number'] = (baby['number'] + 1)   
+      }
+
     } else {
       baby[property] = value
     }
@@ -275,6 +317,18 @@ class BookingActivity extends React.Component {
 
     if ( property == 'is_returning' ) {
       group[property] = !group[property]
+    } else if ( property == 'number' ) {
+    
+      if( value == 'minus' ) {
+
+        if( group['number'] > 1 ) {
+          group['number'] = (group['number'] - 1)
+        } 
+
+      } else {
+        group['number'] = (group['number'] + 1)   
+      }
+
     } else {
       group[property] = value
     }
@@ -290,8 +344,23 @@ class BookingActivity extends React.Component {
   // set properties for the pet structure
   petDataChange(property, value) {
     let pet = this.state.pet 
+
+    if ( property == 'number' ) {
     
-    pet[property] = value
+      if( value == 'minus' ) {
+
+        if( pet['number'] > 1 ) {
+          pet['number'] = (pet['number'] - 1)
+        } 
+
+      } else {
+        pet['number'] = (pet['number'] + 1)   
+      }
+
+    } else {
+      pet[property] = value
+    }
+
     this.setState({ pet })
   }
 
@@ -365,7 +434,7 @@ class BookingActivity extends React.Component {
     let travel_dat = this.state.travel_date
     let destinatn = this.state.destination
     // sanitize data
-    destination = destinatn.trim()
+    destinatn = destinatn.trim()
 
 
     let errors = { destination: [], travel_date: [] }
@@ -377,11 +446,11 @@ class BookingActivity extends React.Component {
 
     // validate destination length and format
     if( destinatn.length < 6 ) {
-        errors.destination = 'Destination should be at least 6 characters'
+        errors.destination.push('Destination should be at least 6 characters')
     }
     // validate travel date  
     if( !travel_dat ) {
-        errors.travel_date = 'Travel date should be provided'
+        errors.travel_date.push('Travel date should be provided')
     }
 
     let apperrors = this.state.errors
@@ -438,7 +507,7 @@ class BookingActivity extends React.Component {
       }
 
     }// if( pet.number > 0 && pet.weight == 0 ) { .. }
-    this.setState({ errors })
+    // this.setState({ errors })
 
     return true
   }// isBookingsValid() { .. }
@@ -449,11 +518,18 @@ class BookingActivity extends React.Component {
     if( !this.isUserValid() ) return
 
     let user = this.state.user
-    alert(`submitted`)
+    
+    this.setState({ show_overlay: true })
+
   }// book() { .. }
 
 
   
+  // hide the overlay modal
+  hideModal() {
+    this.setState({ show_overlay: false })
+  }
+
 } 
 
 const styles = StyleSheet.create({
@@ -484,7 +560,7 @@ const styles = StyleSheet.create({
   },
 
   cta_btn: {
-    marginVertical: 24,
+    marginVertical: 96,
     paddingHorizontal: 8,
     marginHorizontal: 0, // 40
     borderRadius: 24,

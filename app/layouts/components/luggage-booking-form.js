@@ -27,7 +27,7 @@ class LuggageBookingForm extends React.Component {
             {/** number */}
             <Input
                 style={ styles.text_inputs }
-                label='Enter the weight of luggage'
+                label='Enter the weight of luggage (in Kgs)'
                 value={this.props.luggage.weight}
                 onChangeText={ text => this.props.klmOnDataChange('weight', text) }
                 leftIcon={{ type: 'font-awesome', name: 'users' }}

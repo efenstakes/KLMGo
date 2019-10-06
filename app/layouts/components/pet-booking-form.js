@@ -30,28 +30,61 @@ class PetBookingForm extends React.Component {
         <View style={ styles.form }>
   
             {/** number */}
-            <Input
+            <Text style={{ marginBottom: 8 }}> Enter number of pets </Text>
+            <View style={{ flex: 1, flexDirection: 'row', height: 50, marginBottom: 16 }}>
+
+                <View style={{ flex: 2, alignItems: 'center' }}>
+
+                    <Button mode='contained' color='red'
+                        style={{ 
+                            width: 44, height: 44, borderRadius: 22 
+                        }} 
+                        onPress={() => this.props.klmOnDataChange('number', 'minus') }
+                    > - </Button>
+
+                </View>
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                    <Text> {this.props.pet.number} </Text>
+                </View>
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                
+                    <Button mode='contained'
+                        style={{ 
+                            width: 44, height: 44, borderRadius: 22 
+                        }}
+                        onPress={() => this.props.klmOnDataChange('number', 'add') }
+                    > + </Button>
+    
+                </View>
+
+
+            </View>
+            {/* <Input
                     style={ styles.text_inputs }
                     label='Enter number of pets'
                     value={this.props.pet.number}
                     onChangeText={text => this.props.klmOnDataChange('number', text) }
                     leftIcon={{ type: 'font-awesome', name: 'calculator' }}
-                />
+                /> */}
             {/** number */}
 
             {/** weight */}
-            <Input
-                    style={ styles.text_inputs }
-                    label='Enter weight of pets'
-                    value={this.props.pet.weight}
-                    onChangeText={text => this.props.klmOnDataChange('weight', text) }
-                    leftIcon={{ type: 'font-awesome', name: 'calculator' }}
-                    // errorMessage={ 
-                    //     this.props.errors.weight.length > 0 && 
-                    //     this.props.errors.weight.join("\n")
-                    // }
-                    errorStyle={ styles.error_text }
-                />
+            <View style={{ flex: 1, marginBottom: 8 }}>
+                
+                <Input
+                        style={ styles.text_inputs }
+                        label='Enter weight of pets (in Kgs)'
+                        value={this.props.pet.weight}
+                        onChangeText={text => this.props.klmOnDataChange('weight', text) }
+                        leftIcon={{ type: 'font-awesome', name: 'calculator' }}
+                        // errorMessage={ 
+                        //     this.props.errors.weight.length > 0 && 
+                        //     this.props.errors.weight.join("\n")
+                        // }
+                        errorStyle={ styles.error_text }
+                    />
+
+            </View>
             {/** weight */}
 
             {/** carriage */}
@@ -78,14 +111,18 @@ class PetBookingForm extends React.Component {
             {/** carriage */}
 
             {/** instructions */}
-            <Input
-                    style={ styles.text_inputs } 
-                    multiline={true} numberOfLines={4} 
-                    label='Enter any special instructions'
-                    value={this.props.pet.instructions}
-                    onChangeText={text => this.props.klmOnDataChange('instructions', text) }
-                    leftIcon={{ type: 'ionicons', name: 'create' }}
-                />
+            <View style={{ flex: 1, marginBottom: 8 }}>
+                
+                <Input
+                        style={ styles.text_inputs } 
+                        multiline={true} numberOfLines={4} 
+                        label='Enter any special instructions'
+                        value={this.props.pet.instructions}
+                        onChangeText={text => this.props.klmOnDataChange('instructions', text) }
+                        leftIcon={{ type: 'ionicons', name: 'create' }}
+                    />
+
+            </View>
             {/** instructions */}
 
         </View>
