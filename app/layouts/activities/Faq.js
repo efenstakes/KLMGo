@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, Image } from 'react-native'
 import { Paragraph, Button, List } from 'react-native-paper'
 
 import { Rating, Input } from 'react-native-elements'
@@ -44,6 +44,31 @@ class FaqActivity extends React.Component {
     return (
       <ScrollView style={ styles.page }>
         
+                
+        <View style={{ flex: 1, marginHorizontal: '4%', marginVertical: '4%' }}>
+
+          {/* <View style={{ flex: 1 }}></View>
+          <View style={{ flex: 3, paddingHorizontal: 24 }}> */}
+
+          <Image
+                source={ require('../../assets/images/klm-1.jpg') }
+                style={{ 
+                  height: 176, 
+                  width: '100%', 
+                  borderRadius: 16,
+                  justifyContent: 'center',
+                  // margin: 24,
+                  // marginRight: 240
+                }} 
+            />
+
+          {/* </View>
+          <View style={{ flex: 1 }}></View> */}
+
+        </View>
+
+
+
         {/* <List.Section> * title="some text" */}
         {
           this.state.faqs.map((faq, index)=> {
