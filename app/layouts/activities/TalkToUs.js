@@ -30,13 +30,31 @@ class TalkToUsActivity extends React.Component {
     return (
       <ScrollView>
 
-        <View style={{ flex: 1, flexDirection: 'column', alignContent: 'center', height: '100%' }}>
+        
+        <View style={{ flex: 1, marginHorizontal: '4%', marginTop: '4%' }}>
+
+          <Image
+                source={ require('../../assets/images/talk_to_us.jpg') }
+                style={{ 
+                  height: 176, 
+                  width: '100%', 
+                  borderRadius: 16,
+                  justifyContent: 'center',
+                  // margin: 24,
+                  // marginRight: 240
+                }} 
+            />
+
+        </View>
+
+
+
+        <View style={{ flex: 1, flexDirection: 'column', alignContent: 'flex-start', height: '100%' }}>
 
           <Paragraph style={{
-            marginTop: '8%', marginLeft: '12%', fontSize: 28, lineHeight: 40, 
+            marginTop: '8%', marginLeft: '4%', fontSize: 28, lineHeight: 40, 
             marginBottom: '4%'
-          }}> We are always listening </Paragraph>
-        
+          }}> We are always listening </Paragraph>  
 
          
           {/** call */}
@@ -54,7 +72,7 @@ class TalkToUsActivity extends React.Component {
               />
             </View>
             <View style={{ 
-                    flex: 2,  paddingTop: 0, marginLeft: 16, alignItems: 'flex-start', height: 44 
+                    flex: 2,  paddingTop: 0, marginLeft: 16, alignContent: 'flex-start', alignItems: 'flex-start', height: 44 
                   }}>
               <Button style={{ height: 32 }} onPress={ ()=> Linking.openURL('tel:0799919960') }>
                 0799919960
