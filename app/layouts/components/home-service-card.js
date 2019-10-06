@@ -32,7 +32,7 @@ function HomeServiceCard({ service, onServiceClick }) {
                     style={{ height: 176, width: '116%', left: -16, alignSelf: 'stretch' }} 
                 />
 
-                <Paragraph style={{ marginTop: 8, marginBottom: 16 }}>
+                <Paragraph style={{ marginTop: 8, marginBottom: 16, fontSize: 14 }}>
                   { service.woo_text }
                 </Paragraph>
   

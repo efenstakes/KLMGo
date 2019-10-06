@@ -27,7 +27,7 @@ class HomeActivity extends React.Component {
         { 
           name: 'luggage', act_name: 'luggage', title: 'Luggage',
           woo_text: 'Travelling with heavy luggage or want to ship heavy luggage?',
-          image: require('../../assets/images/plane_wing.jpg') 
+          image: require('../../assets/images/klm-2.jpg') 
         },
         { 
           name: 'babies', act_name: 'umnr', title: 'Babies',
@@ -70,19 +70,33 @@ class HomeActivity extends React.Component {
           /> */}
 
         <ImageBackground
-                source={ require('../../assets/images/klm-1.jpg') }
+                source={ require('../../assets/images/container_background.png') }
                 style={{ 
-                  width: '100%', height: 176, 
+                  width: '100%', height: 200, 
                   borderRadius: 50,
                   borderBottomLeftRadius: 16, 
                   borderBottomRightRadius: 16, 
                   justifyContent: 'flex-end',
-                  marginBottom: 24
+                  marginBottom: 24,
+                  // transform: [{ rotate: '180deg' }]
                 }} 
             >
+
+            <Image
+                source={ require('../../assets/icons/klm_go_logo.png') } 
+                style={{ 
+                  height: 112, width: 112, 
+                  borderRadius: 56,
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  // margin: 24,
+                  // marginRight: 240
+                }} 
+            />  
+
             <Text style={{ 
-                    marginBottom: 16, marginLeft: 16, fontSize: 24,
-                    fontWeight: 'bold', color: 'white' 
+                    marginBottom: 16, marginLeft: 16, fontSize: 18,
+                    fontWeight: 'bold', color: 'black' 
                   }}> 
               {/* Travel the world with us */}
               Travel the world with a trusted partner

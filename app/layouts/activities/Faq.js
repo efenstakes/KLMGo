@@ -51,9 +51,9 @@ class FaqActivity extends React.Component {
           <View style={{ flex: 3, paddingHorizontal: 24 }}> */}
 
           <Image
-                source={ require('../../assets/images/klm-1.jpg') }
+                source={ require('../../assets/images/faq.jpg') }
                 style={{ 
-                  height: 176, 
+                  height: 200, 
                   width: '100%', 
                   borderRadius: 16,
                   justifyContent: 'center',

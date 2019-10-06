@@ -94,7 +94,7 @@ class InstructionActivity extends React.Component {
           <Image
                 source={ image } 
                 style={{ 
-                  height: 176, 
+                  height: 200, 
                   width: '100%', 
                   borderRadius: 16,
                   justifyContent: 'center',
@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
 
   instruction_text: {
     fontSize: 16,
+    fontFamily: 'Verdana',
     lineHeight: 32,
     letterSpacing: 1,
     marginVertical: 8

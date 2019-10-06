@@ -88,10 +88,10 @@ class PetBookingForm extends React.Component {
             {/** weight */}
 
             {/** carriage */}
-            <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ flex: 1, flexDirection: 'row', marginBottom: 8 }}>
                
                <View style={{ flex: 3, marginBottom: 24, marginTop: 24 }}>
-                    <Text> In which carriage do you want your pets </Text>
+                    <Text style={{ fontSize: 16, fontFamily: 'Verdana' }}> In which carriage do you want your pets </Text>
                </View>
                <View style={{ flex: 1 }}>
                    
@@ -102,6 +102,7 @@ class PetBookingForm extends React.Component {
                             this.props.klmOnDataChange('carriage', itemValue )
                         }>
                         <Picker.Item label="Cabin" value="CABIN" />
+                        <Picker.Item label="Hold" value="HOLD" />
                         <Picker.Item label="Baggage Hold" value="BAGGAGE HOLD" />
                     </Picker>
 

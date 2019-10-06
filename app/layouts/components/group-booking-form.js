@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, TouchableHighlight } from 'react-native'
+import { StyleSheet, View, TouchableHighlight, Picker } from 'react-native'
 import { 
     Paragraph, Button, TextInput, Text, Title, Switch 
   } from 'react-native-paper'
@@ -19,19 +19,15 @@ class GroupBookingForm extends React.Component {
         }
     }// constructor(props) { .. }
   
+    componentDidMount() {
+        // alert(this.props.errors.name.length)
+    }
   
     render() {
       return (
         <View style={ styles.form }>
-  
+            
             {/** number */}
-            {/* <Input
-                    style={ styles.text_inputs }
-                    label='Enter number of people'
-                    value={this.props.group.number}
-                    onChangeText={text => this.props.klmOnDataChange('number', text) }
-                    leftIcon={{ type: 'font-awesome', name: 'users' }}
-                /> */}
 
             <Text style={{ marginBottom: 8 }}> Enter number of people </Text>
             <View style={{ flex: 1, flexDirection: 'row', height: 50, marginBottom: 16 }}>
@@ -63,16 +59,46 @@ class GroupBookingForm extends React.Component {
 
             </View>
             {/** number */}
-            
+
+            {/** type */}
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+               
+               <View style={{ flex: 3, marginBottom: 24, marginTop: 24 }}>
+                    <Text style={{ fontSize: 16, fontFamily: 'Verdana' }}> Type </Text>
+               </View>
+               <View style={{ flex: 1 }}>
+                   
+                    <Picker
+                        selectedValue={ this.props.group.type }
+                        style={{ marginTop: 8, width: 320 }}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.props.klmOnDataChange('type', itemValue )
+                        }>
+                        <Picker.Item label="conference" value="conference" />
+                        <Picker.Item label="leisure" value="leisure" />
+                        <Picker.Item label="event" value="event" />
+                        <Picker.Item label="students" value="students" />
+                        <Picker.Item label="sports" value="sports" />
+                        <Picker.Item label="journalists" value="journalists" />
+                        <Picker.Item label="group series" value="group series" />
+                        <Picker.Item label="musicians" value="musicians" />
+                        <Picker.Item label="other" value="other" />
+                    </Picker>
+
+               </View>
+
+            </View>
+            {/** type */}
+
             {/** if returning */}
             <TouchableHighlight 
                underlayColor={'white'}
                onPress={ ()=> this.props.klmOnDataChange('is_returning', null) }>
                 
-                <View style={{ flex: 1, flexDirection: 'row' }}>
+                <View style={{ flex: 1, flexDirection: 'row', marginBottom: 8 }}>
                 
                     <View style={{ flex: 3 }}>
-                            <Text> Need a return ticket? </Text>
+                        <Text style={{ fontSize: 16, fontFamily: 'Verdana' }}> Need a return ticket? </Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         <Switch
@@ -88,6 +114,19 @@ class GroupBookingForm extends React.Component {
 
             </TouchableHighlight>
             {/** if returning */}
+
+
+            {/** name */}
+            <View style={{ marginBottom: 8 }}>
+                <Input
+                        style={ styles.text_inputs }
+                        label='Enter group name'
+                        value={this.props.group.name}
+                        onChangeText={text => this.props.klmOnDataChange('name', text) }
+                        leftIcon={{ type: 'font-awesome', name: 'users' }}
+                    />
+            </View>
+            {/** name */}
 
             {/** instructions */}
             <View style={{ flex: 1, marginBottom: 8 }}>

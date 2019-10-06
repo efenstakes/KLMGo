@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, Picker } from 'react-native'
 import { Paragraph, Button, List, Text, ProgressBar, Colors } from 'react-native-paper'
 
 import { CheckBox, Input  } from 'react-native-elements'
@@ -31,7 +31,10 @@ class BookingActivity extends React.Component {
         number: 0, is_returning: false, special_instructions: ''
       },
       group: {
-        number: 0, is_returning: false, special_instructions: ''
+        name: '', number: 0, is_returning: false, special_instructions: '',
+        // conference, leisure, event, students, sports, journalists,
+        // group series, musicians, other
+        type: 'other' 
       },
       nanny: {
         date_from: null, date_to: null, special_instructions: '' 
@@ -44,6 +47,7 @@ class BookingActivity extends React.Component {
       },
 
       destination: '', travel_date: null,
+      class: 'economy', // economy/business
 
       step: 1,
 
@@ -51,7 +55,7 @@ class BookingActivity extends React.Component {
       errors: {
         user: { name: [], email: [], phone: [] },
         baby: { number: [] },
-        group: { number: [] },
+        group: { number: [], name: [] },
         luggage: { weight: [] },
         pet: { number: [], weight: [], carriage: [] },
         booking: '',
@@ -110,7 +114,9 @@ class BookingActivity extends React.Component {
       <View style={ styles.form }>
 
         {/** country and city */}
-        <Input
+        <View style={{ marginBottom: 8 }}>
+          
+          <Input
               style={ styles.text_inputs }
               label='Enter your destination'
               value={this.state.destination}
@@ -122,11 +128,13 @@ class BookingActivity extends React.Component {
               }
               errorStyle={ styles.error_text }
           />
+
+        </View>
         {/** country and city */}
 
         {/** date the travel is */}
         <View style={{ width: '100%', marginVertical: 16, marginLeft: 8,  }}>
-          <Text style={{ fontSize: 16 }}> When do you travel </Text>
+          <Text style={{ fontSize: 16, fontFamily: 'Verdana' }}> When do you travel </Text>
 
           <DatePicker
             style={{ width: '100%', marginTop: 8 }}
@@ -171,6 +179,31 @@ class BookingActivity extends React.Component {
         </View>
         
         {/** date the travel is */}
+
+
+          {/** class */}
+          <View style={{ flex: 1, flexDirection: 'row', marginBottom: 8 }}>
+              
+              <View style={{ flex: 3, marginBottom: 24, marginTop: 24 }}>
+                  <Text style={{ fontSize: 16, fontFamily: 'Verdana' }}> Which class do you want to book </Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                  
+                  <Picker
+                      selectedValue={ this.state.class }
+                      style={{ marginTop: 8, width: 320 }}
+                      onValueChange={(itemValue, itemIndex) =>
+                          this.setState({ class: itemValue })
+                      }>
+                      <Picker.Item label="business" value="business" />
+                      <Picker.Item label="economy" value="economy" />
+                  </Picker>
+
+              </View>
+
+          </View>
+          {/** carriage */}
+
 
       </View>
     )
@@ -479,13 +512,15 @@ class BookingActivity extends React.Component {
 
     // check atleast one was provided
     let errors = {
-      baby: { number: [] }, group: { number: [] },
+      baby: { number: [] }, group: { number: [], name: [] },
       luggage: { weight: [] },
       pet: { number: [], weight: [], carriage: [] }
     }
 
     if( 
-        baby.number == 0 && group.number < 2 && luggage.weight == 0 && 
+        baby.number == 0 && 
+        (group.number < 2 || group.name.length < 5) &&
+        luggage.weight == 0 && 
         pet.number == 0 && pet.weight == 0
       ) {
         let app_errors = this.state.errors
@@ -499,7 +534,7 @@ class BookingActivity extends React.Component {
       
       // alert(errors.pet.weight.join('\n'))
       
-      if( baby.number == 0 && group.number < 2 && luggage.weight == 0 ) {
+      if( baby.number == 0 && (group.number < 2 || group.name.length < 5) && luggage.weight == 0 ) {
         let apperrors = this.state.errors
         apperrors.booking = 'Make one booking to proceed'
         this.setState({ errors: apperrors })
@@ -507,6 +542,20 @@ class BookingActivity extends React.Component {
       }
 
     }// if( pet.number > 0 && pet.weight == 0 ) { .. }
+    
+    if( group.number > 2 && group.name.length < 5 ) {
+      let apperrors = this.state.errors
+      apperrors.group.name = 'Enter group name to proceed'
+      this.setState({ errors: apperrors })
+      return false
+    }
+    if( group.number < 2 && group.name.length > 4 ) {
+      let apperrors = this.state.errors
+      apperrors.group.name = 'Enter number of people in group name to proceed'
+      this.setState({ errors: apperrors })
+      return false
+    }
+
     // this.setState({ errors })
 
     return true

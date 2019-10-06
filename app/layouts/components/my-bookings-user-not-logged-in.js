@@ -23,11 +23,11 @@ export default function UserNotLoggedIn(props) {
           Log in to get more from KLM Go 
         </Paragraph>
 
-        <Button mode='contained' onPress={ props.goToLogin }
+        <Button mode='contained' uppercase={false} onPress={ props.goToLogin }
                 style={{ marginTop: 40, marginBottom: 24, borderRadius: 24 }}> 
           Log In Now 
         </Button>
-        <Button mode='contained' onPress={ props.goToRegister }
+        <Button mode='contained' uppercase={false} onPress={ props.goToRegister }
                 style={{ marginBottom: 160, borderRadius: 24 }}> 
           Register Now 
         </Button>

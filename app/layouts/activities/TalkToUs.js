@@ -36,7 +36,7 @@ class TalkToUsActivity extends React.Component {
           <Image
                 source={ require('../../assets/images/talk_to_us.jpg') }
                 style={{ 
-                  height: 176, 
+                  height: 200, 
                   width: '100%', 
                   borderRadius: 16,
                   justifyContent: 'center',
@@ -167,7 +167,7 @@ class TalkToUsActivity extends React.Component {
 
             <Button uppercase={false} mode="contained" onPress={ this.submitResponse } 
                     style={ styles.response_button }>
-              Rate The Instructions
+              Drop my Note
             </Button>
 
           </View>
