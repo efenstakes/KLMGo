@@ -1,9 +1,9 @@
 import React from 'react'
 import { 
-        View, StyleSheet, ScrollView, AsyncStorage 
+        View, StyleSheet, ScrollView, AsyncStorage, Image, ImageBackground 
       } from 'react-native'
 import { 
-          Paragraph, Button
+          Paragraph, Button, Text
       } from 'react-native-paper'
 
 import { Rating, Input } from 'react-native-elements'
@@ -50,10 +50,65 @@ class InstructionActivity extends React.Component {
   render() {
     let service = this.props.navigation.getParam('service')
 
+    let image = null
+    let service_title = service.title.toLowerCase()
+    switch ( service_title ) {
+      case 'babies':
+        image = require('../../assets/images/baby.jpg')
+        break;
+      case 'groups':
+        image = require('../../assets/images/friends.jpg')
+        break;
+      case 'luggage':
+        image = require('../../assets/images/klm-2.jpg')
+        break;
+      case 'pets':
+        image = require('../../assets/images/pets.jpg')
+        break;
+    
+      default:
+        break;
+    }
+
     return (
       <ScrollView style={{ width: '100%' }}> 
         {/** padding: 48 */}
+   
+        {/* <Image
+                source={ require('../../assets/images/klm-1.jpg') }
+                style={{ 
+                  height: 176,
+                  width: '100%', 
+                  borderRadius: 16,
+                  justifyContent: 'center',
+                  // margin: 24,
+                  // marginRight: 240
+                }} 
+            />      */}
         
+        <View style={{ flex: 1, marginHorizontal: '8%', marginVertical: '4%' }}>
+
+          {/* <View style={{ flex: 1 }}></View>
+          <View style={{ flex: 3, paddingHorizontal: 24 }}> */}
+
+          <Image
+                source={ image } 
+                style={{ 
+                  height: 176, 
+                  width: '100%', 
+                  borderRadius: 16,
+                  justifyContent: 'center',
+                  // margin: 24,
+                  // marginRight: 240
+                }} 
+            />
+
+          {/* </View>
+          <View style={{ flex: 1 }}></View> */}
+
+        </View>
+
+
         {/** instructions container */}
         <View style={ styles.instruction_container }>
           {
