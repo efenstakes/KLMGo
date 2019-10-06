@@ -16,11 +16,13 @@ class SplashScreenActivity extends React.Component {
     this.state = { }
 
     this.goNext = this.goNext.bind(this)
-    this.test = this.test.bind(this)
   }
 
   componentDidMount() {
-    setTimeout(()=> this.goNext() , 1000)
+    this.timeout = setTimeout(()=> this.goNext() , 1000)
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeout)
   }
 
 
