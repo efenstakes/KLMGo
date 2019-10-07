@@ -37,6 +37,7 @@ class SplashScreenActivity extends React.Component {
            style={[ styles.page, { flex: 1, width: '100%' } ]}>
         
         <Text style={styles.title_one}> KLM Go </Text>
+        {/* <Paragraph style={{ fontFamily: 'noa', fontSize: 32 }}> KLM GO </Paragraph> */}
         
         <Image
             source={ require('../../assets/icons/klm_go_logo.png') }
@@ -103,7 +104,8 @@ const styles = StyleSheet.create({
     marginTop: '16%',
     color: 'black',
     fontSize: 32,
-    fontWeight: 'bold'
+    // fontWeight: 'bold',
+    // fontFamily: 'noa'
   },
 
   klm_image: {
@@ -118,8 +120,9 @@ const styles = StyleSheet.create({
   klm_brandtext: {
     position: 'absolute',
     bottom: 24, 
-    fontStyle: 'italic',
-    fontSize: 16
+    // fontStyle: 'italic',
+    fontSize: 16,
+    // fontFamily: 'verdana'
   },
 
   klm_spinner: {
