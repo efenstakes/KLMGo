@@ -74,11 +74,11 @@ class TalkToUsActivity extends React.Component {
             <View style={{ 
                     flex: 2,  paddingTop: 0, marginLeft: 16, alignContent: 'flex-start', alignItems: 'flex-start', height: 44 
                   }}>
-              <Button style={{ height: 32 }} onPress={ ()=> Linking.openURL('tel:0799919960') }>
-                0799919960
+              <Button style={{ height: 32 }} onPress={ ()=> Linking.openURL('tel:+254721222888') }>
+                +254721222888
               </Button>
-              <Button style={{ height: 32 }} onPress={ ()=> Linking.openURL('tel:0799919960') }>
-                0799919960
+              <Button style={{ height: 32 }} onPress={ ()=> Linking.openURL('tel:+254711333888') }>
+                +254711333888
               </Button>
             </View>
 
@@ -104,12 +104,12 @@ class TalkToUsActivity extends React.Component {
                     flex: 2,  paddingTop: 0, marginLeft: 16, alignItems: 'flex-start' 
                   }}>
               <Button style={{ height: 32 }} 
-                      onPress={ ()=> Linking.openURL('whatsapp://send?phone=0799919960') }>
-                0799919960
+                      onPress={ ()=> Linking.openURL('whatsapp://send?phone=+254721222888') }>
+                +254721222888
               </Button>
               <Button style={{ height: 32 }} 
-                      onPress={ ()=> Linking.openURL('whatsapp://send?phone=0799919960') }>
-                0799919960
+                      onPress={ ()=> Linking.openURL('whatsapp://send?phone=+254711333888') }>
+                +254711333888
               </Button>
             </View>
 
@@ -135,8 +135,8 @@ class TalkToUsActivity extends React.Component {
                     flex: 2,  paddingTop: 16, marginLeft: 16, alignItems: 'flex-start' 
                   }}>
               <Button style={{ height: 32 }} 
-                      onPress={ ()=> Linking.openURL('mailto:support.klm.go@gmail.com?subject=Support&body=') }>
-                klm.go@gmail.com
+                      onPress={ ()=> Linking.openURL('mailto:care.klm.go@klm.com?subject=Support&body=') }>
+                care.klm.go@klm.com
               </Button>
             </View>
 
@@ -156,7 +156,7 @@ class TalkToUsActivity extends React.Component {
 
       
             <Input
-                label='Write a note for us' 
+                label='Write a note to us' 
                 mode='flat' multiline={true} numberOfLines={4}
                 value={this.state.response_text}
                 onChangeText={(text) => this.setState({ response_text: text })}

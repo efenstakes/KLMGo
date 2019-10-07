@@ -70,7 +70,7 @@ class HomeActivity extends React.Component {
           /> */}
 
         <ImageBackground
-                source={ require('../../assets/images/container_background.png') }
+                source={ require('../../assets/images/plane_wing.jpg') }
                 style={{ 
                   width: '100%', height: 200, 
                   borderRadius: 50,
@@ -96,7 +96,8 @@ class HomeActivity extends React.Component {
 
             <Text style={{ 
                     marginBottom: 16, marginLeft: 16, fontSize: 18,
-                    fontWeight: 'bold', color: 'black' 
+                    fontWeight: 'bold', color: 'black',
+                    alignSelf: 'center' 
                   }}> 
               {/* Travel the world with us */}
               Travel the world with a trusted partner
