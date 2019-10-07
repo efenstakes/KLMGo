@@ -13,6 +13,12 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // custom components
 import AppResponseOverlayModal from '../components/app-response-overlay'
 
+// instruction containers
+import LuggageInstructions from '../components/instructions/luggage'
+import GroupsInstructions from '../components/instructions/groups'
+import BabiesInstructions from '../components/instructions/babies'
+import PetsInstructions from '../components/instructions/pets'
+
 
 // server domain
 const SERVER = 'http://localhost:4445'
@@ -40,7 +46,7 @@ class InstructionActivity extends React.Component {
   }
 
   componentDidMount() {
-    this.getInstructions()
+    // this.getInstructions()
   }
 
   componentWillUnmount() {
@@ -49,20 +55,25 @@ class InstructionActivity extends React.Component {
   
   render() {
     let service = this.props.navigation.getParam('service')
+    let instruction_set_container = null
 
     let image = null
     let service_title = service.title.toLowerCase()
     switch ( service_title ) {
       case 'babies':
+        instruction_set_container = <BabiesInstructions />
         image = require('../../assets/images/baby.jpg')
         break;
       case 'groups':
+        instruction_set_container = <GroupsInstructions />
         image = require('../../assets/images/friends.jpg')
         break;
       case 'luggage':
+        instruction_set_container = <LuggageInstructions />
         image = require('../../assets/images/klm-2.jpg')
         break;
       case 'pets':
+        instruction_set_container = <PetsInstructions />
         image = require('../../assets/images/pets.jpg')
         break;
     
@@ -110,17 +121,7 @@ class InstructionActivity extends React.Component {
 
 
         {/** instructions container */}
-        <View style={ styles.instruction_container }>
-          {
-            this.state.instructions.map((instruction, index)=> {
-              return (
-                <Paragraph key={index} style={ styles.instruction_text }> 
-                   { instruction } 
-                </Paragraph>
-              )
-            })
-          }
-        </View>
+        { instruction_set_container }
         {/** instructions container */}
 
         {/** overlay modal to show when user makes a rating */}
@@ -138,7 +139,7 @@ class InstructionActivity extends React.Component {
           </Paragraph>
 
           <Rating
-            type='star' style={{ marginBottom: 24 }}
+            type='star' style={{ marginVertical: 24 }} /** 24 */
             ratingCount={5} imageSize={40}
             showRating
             ratingTextColor='lightblue'
@@ -261,7 +262,8 @@ const styles = StyleSheet.create({
   },
 
   response_form_container: {
-    padding: '8%'
+    paddingHorizontal: '8%',
+    paddingVertical: '4%'
   },
 
   rating_button: {
