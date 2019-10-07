@@ -22,7 +22,7 @@ class TutorialActivity extends React.Component {
           <View style={styles.slide_upper_container}>
             
             <Image
-              source={ require('../../assets/images/klm-1.jpg') }
+              source={ require('../../assets/images/dubai.jpg') }
               style={ styles.klm_upper_slide_image }
             />
             {/* <Text style={ styles.woo_text_one }> Ont go </Text> */}
@@ -77,7 +77,7 @@ class TutorialActivity extends React.Component {
           <View style={styles.slide_upper_container}>
             
             <Image
-              source={ require('../../assets/images/klm-4.jpg') }
+              source={ require('../../assets/images/klm-1.jpg') }
               style={ styles.klm_upper_slide_image }
             />
             {/* <Text style={ styles.woo_text_one }> Hello lets go </Text> */}
@@ -160,8 +160,9 @@ const styles = StyleSheet.create({
 
   text: {
     color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    // fontWeight: 'bold',
+    // fontFamily: 'noa'
   }
 })
 
