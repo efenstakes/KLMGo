@@ -1,14 +1,15 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, Image } from 'react-native'
+import { StyleSheet, View, ScrollView, Image, Dimensions } from 'react-native'
 import { Paragraph, Button, List } from 'react-native-paper'
 
 import { Rating, Input } from 'react-native-elements'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
-  
+import Icon from 'react-native-vector-icons/FontAwesome'  
+
 // custom components
 import AppResponseOverlayModal from '../components/app-response-overlay'
-
+import ActivityTopImage from '../components/activity-top-image'
+import Accordion from '../components/accordion'
 
 // server domain
 const SERVER = 'http://localhost:4445'
@@ -41,19 +42,21 @@ class FaqActivity extends React.Component {
 
 
   render() {
+    let height = Dimensions.get('window').height
+    let width = Dimensions.get('window').width
+    let image_height = height/4
+    // alert(`height ${height} width ${width}`)
+
     return (
       <ScrollView style={ styles.page }>
         
                 
-        <View style={{ flex: 1, marginHorizontal: '4%', marginVertical: '4%' }}>
-
-          {/* <View style={{ flex: 1 }}></View>
-          <View style={{ flex: 3, paddingHorizontal: 24 }}> */}
+        {/* <View style={{ flex: 1, marginHorizontal: '4%', marginVertical: '4%' }}>
 
           <Image
                 source={ require('../../assets/images/faq.jpg') }
                 style={{ 
-                  height: 200, 
+                  height: image_height, // 200, 
                   width: '100%', 
                   borderRadius: 16,
                   justifyContent: 'center',
@@ -62,10 +65,9 @@ class FaqActivity extends React.Component {
                 }} 
             />
 
-          {/* </View>
-          <View style={{ flex: 1 }}></View> */}
-
-        </View>
+        </View> */}
+        <ActivityTopImage image={ require('../../assets/images/faq.jpg') }
+                          height={ image_height } />
 
 
 
@@ -73,13 +75,15 @@ class FaqActivity extends React.Component {
         {
           this.state.faqs.map((faq, index)=> {
             return (
-              <List.Accordion
-                key={index} title={ faq.question }
-                left={props => <List.Icon {...props} icon="info" />}
-              >
-                <List.Item 
-                     description={ faq.answer } descriptionNumberOfLines="4" />
-              </List.Accordion>
+              // <List.Accordion
+              //   key={index} title={ faq.question }
+              //   left={props => <List.Icon {...props} icon="info" />}
+              //   style={{ margin: 0, paddingVertical: 0 }}
+              // >
+              //   <List.Item style={{ marginTop: -10, paddingVertical: 0 }}
+              //        description={ faq.answer } descriptionNumberOfLines={8} />
+              // </List.Accordion>
+              <Accordion title={ faq.question } data={ faq.answer } ></Accordion>
             )
           })
         }

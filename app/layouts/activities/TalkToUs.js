@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ScrollView, View, Image, Linking } from 'react-native'
+import { StyleSheet, ScrollView, View, Image, Linking, Dimensions } from 'react-native'
 import { Paragraph, Button, List, Colors, Text, TextInput } from 'react-native-paper'
 import { Input } from 'react-native-elements'
 
@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // custom components
 import ContactItem from '../components/contact-item'
 import AppResponseOverlayModal from '../components/app-response-overlay'
+import ActivityTopImage from '../components/activity-top-image'
 
 
 // talk to us
@@ -27,11 +28,15 @@ class TalkToUsActivity extends React.Component {
 
   
   render() {
+    let height = Dimensions.get('window').height
+    let width = Dimensions.get('window').width
+    let image_height = height/4
+
     return (
       <ScrollView>
 
         
-        <View style={{ flex: 1, marginHorizontal: '4%', marginTop: '4%' }}>
+        {/* <View style={{ flex: 1, marginHorizontal: '4%', marginTop: '4%' }}>
 
           <Image
                 source={ require('../../assets/images/talk_to_us.jpg') }
@@ -45,8 +50,10 @@ class TalkToUsActivity extends React.Component {
                 }} 
             />
 
-        </View>
+        </View> */}
 
+        <ActivityTopImage image={ require('../../assets/images/talk_to_us.jpg') }
+                          height={ image_height } />
 
 
         <View style={{ flex: 1, flexDirection: 'column', alignContent: 'flex-start', height: '100%' }}>

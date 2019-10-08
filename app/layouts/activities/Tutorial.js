@@ -22,7 +22,7 @@ class TutorialActivity extends React.Component {
           <View style={styles.slide_upper_container}>
             
             <Image
-              source={ require('../../assets/images/dubai.jpg') }
+              source={ require('../../assets/images/100yrs.jpg') }
               style={ styles.klm_upper_slide_image }
             />
             {/* <Text style={ styles.woo_text_one }> Ont go </Text> */}
@@ -30,7 +30,8 @@ class TutorialActivity extends React.Component {
           </View>
           <View style={styles.slide_lower_container}>
             <Text style={styles.text}>
-              Explore your journeys of inspirations with KLM Go
+              Explore your journeys of inspirations with KLM Go 
+              and enjoy more deals as we celebrate 100 years
             </Text>
           </View>
         </View>
@@ -39,7 +40,7 @@ class TutorialActivity extends React.Component {
           <View style={styles.slide_upper_container}>
             
             <Image
-              source={ require('../../assets/images/klm-2.jpg') }
+              source={ require('../../assets/images/dubai.jpg') }
               style={ styles.klm_upper_slide_image }
             />
             {/* <Text style={ styles.woo_text_one }> Two to go </Text> */}
@@ -58,7 +59,7 @@ class TutorialActivity extends React.Component {
           <View style={styles.slide_upper_container}>
             
             <Image
-              source={ require('../../assets/images/klm-3.jpg') }
+              source={ require('../../assets/images/fly.jpg') }
               style={ styles.klm_upper_slide_image }
             />
             {/* <Text style={ styles.woo_text_one }> Close to go </Text> */}
@@ -77,7 +78,7 @@ class TutorialActivity extends React.Component {
           <View style={styles.slide_upper_container}>
             
             <Image
-              source={ require('../../assets/images/klm-1.jpg') }
+              source={ require('../../assets/images/groupe.jpg') }
               style={ styles.klm_upper_slide_image }
             />
             {/* <Text style={ styles.woo_text_one }> Hello lets go </Text> */}

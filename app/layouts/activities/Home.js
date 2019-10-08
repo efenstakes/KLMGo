@@ -27,7 +27,7 @@ class HomeActivity extends React.Component {
         { 
           name: 'luggage', act_name: 'luggage', title: 'Luggage',
           woo_text: 'Travelling with heavy luggage or want to ship heavy luggage?',
-          image: require('../../assets/images/klm-2.jpg') 
+          image: require('../../assets/images/baggage.jpg') 
         },
         { 
           name: 'babies', act_name: 'umnr', title: 'Babies',
@@ -42,7 +42,7 @@ class HomeActivity extends React.Component {
         { 
           name: 'group', act_name: 'group', title: 'Groups',
           woo_text: 'Want to know how to book and travel as a group?',
-          image: require('../../assets/images/friends.jpg')
+          image: require('../../assets/images/groupe.jpg')
         }
       ]
 

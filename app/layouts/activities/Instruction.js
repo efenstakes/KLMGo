@@ -1,6 +1,6 @@
 import React from 'react'
 import { 
-        View, StyleSheet, ScrollView, AsyncStorage, Image, ImageBackground 
+        View, StyleSheet, ScrollView, Image, ImageBackground, Dimensions 
       } from 'react-native'
 import { 
           Paragraph, Button, Text
@@ -54,6 +54,9 @@ class InstructionActivity extends React.Component {
   }
   
   render() {
+    let height = Dimensions.get('window').height
+    let image_height = height/4
+
     let service = this.props.navigation.getParam('service')
     let instruction_set_container = null
 
@@ -70,7 +73,7 @@ class InstructionActivity extends React.Component {
         break;
       case 'luggage':
         instruction_set_container = <LuggageInstructions />
-        image = require('../../assets/images/klm-2.jpg')
+        image = require('../../assets/images/baggage.jpg')
         break;
       case 'pets':
         instruction_set_container = <PetsInstructions />
@@ -83,29 +86,13 @@ class InstructionActivity extends React.Component {
 
     return (
       <ScrollView style={{ width: '100%' }}> 
-        {/** padding: 48 */}
-   
-        {/* <Image
-                source={ require('../../assets/images/klm-1.jpg') }
-                style={{ 
-                  height: 176,
-                  width: '100%', 
-                  borderRadius: 16,
-                  justifyContent: 'center',
-                  // margin: 24,
-                  // marginRight: 240
-                }} 
-            />      */}
         
         <View style={{ flex: 1, marginHorizontal: '8%', marginVertical: '4%' }}>
-
-          {/* <View style={{ flex: 1 }}></View>
-          <View style={{ flex: 3, paddingHorizontal: 24 }}> */}
 
           <Image
                 source={ image } 
                 style={{ 
-                  height: 200, 
+                  height: image_height, 
                   width: '100%', 
                   borderRadius: 16,
                   justifyContent: 'center',
@@ -113,9 +100,6 @@ class InstructionActivity extends React.Component {
                   // marginRight: 240
                 }} 
             />
-
-          {/* </View>
-          <View style={{ flex: 1 }}></View> */}
 
         </View>
 
