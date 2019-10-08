@@ -5,11 +5,22 @@ import { Paragraph, Button, Text } from 'react-native-paper'
 
 import Swiper from 'react-native-swiper'
 
+import AsyncStorage from '@react-native-community/async-storage'
+
+
 // tutorial page
 class TutorialActivity extends React.Component {
 
   static navigationOptions = {
     header: null
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {}
+
+    this.goHome = this.goHome.bind(this)
   }
  
   
@@ -89,7 +100,7 @@ class TutorialActivity extends React.Component {
               Now you're ready to KLM Go
             </Text>
 
-            <Button onPress={ ()=> this.props.navigation.navigate('AppHome') }
+            <Button onPress={ this.goHome }
                     uppercase={false} mode="contained"
                     style={ styles.lets_go_button }
             > Ready, Let's Go </Button>
@@ -103,6 +114,14 @@ class TutorialActivity extends React.Component {
     )
   }// render() { .. }
   
+  async goHome() {
+
+    await AsyncStorage.setItem('klm:go:has-visited', 'oh yes')
+
+    this.props.navigation.navigate('AppHome')
+  }
+
+
 }
 
 

@@ -5,6 +5,9 @@ import {
        } from 'react-native-paper'
 import LinearGradient from 'react-native-linear-gradient'
 
+import AsyncStorage from '@react-native-community/async-storage'
+
+
 // splash screen page
 class SplashScreenActivity extends React.Component {
   static navigationOptions = {
@@ -44,16 +47,6 @@ class SplashScreenActivity extends React.Component {
             style={ styles.klm_image }
           />
 
-        {/* <Paragraph style={{ fontFamily: 'verdana' }}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-        </Paragraph>
-        <Paragraph style={{ fontFamily: 'noa' }}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-        </Paragraph>
-        <Paragraph style={{ fontFamily: 'longhand' }}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-        </Paragraph> */}
-
         <ActivityIndicator animating={true} color='#003145'
               size='40' style={ styles.klm_spinner } />  
 
@@ -67,9 +60,15 @@ class SplashScreenActivity extends React.Component {
   }// render() { .. }
 
 
-  goNext() {
-    this.props.navigation.navigate('Tutorial')
-    // this.props.navigation.navigate('AppHome')
+  async goNext() { 
+    const hasVisited = await AsyncStorage.getItem('klm:go:has-visited')
+
+    if( hasVisited == null ) {
+      this.props.navigation.navigate('Tutorial')
+      return
+    }
+
+    this.props.navigation.navigate('AppHome')
   }
   async test() {
     
