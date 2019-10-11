@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default NetworkError = ({ message, retry })=> {
     return (
@@ -12,7 +13,7 @@ export default NetworkError = ({ message, retry })=> {
               { message }
             </Text>
     
-            {/* <AwesomeIcon name='network-error' color={ '#2cdeea' } size='large' /> */}
+            <Icon name='alert' color='#E37222' size={ 64 } />
     
             <Button uppercase={false} mode='contained' onPress={ retry }
                     style={{ marginVertical: 48, borderRadius: 24 }}

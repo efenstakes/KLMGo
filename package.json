@@ -12,6 +12,7 @@
     "appcenter": "2.4.0",
     "appcenter-analytics": "2.4.0",
     "appcenter-crashes": "2.4.0",
+    "moment": "^2.24.0",
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-datepicker": "^1.7.2",

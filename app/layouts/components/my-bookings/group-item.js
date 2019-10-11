@@ -7,12 +7,12 @@ export default GroupItem = ({ item, styles }) => {
 
     if( item.number < 2 || item.name.length < 4  ) {
         return(
+            null
+            // <View style={{ ...styles }}>
 
-            <View style={{ ...styles }}>
+            //    <Text style={{ fontSize: 16 }}> Group Booking - Not Made </Text>
 
-               <Text style={{ fontSize: 16 }}> Group Booking - Not Made </Text>
-
-            </View>
+            // </View>
 
         )
     }// if( item.number < 2 || item.name.length < 4  ) { .. }

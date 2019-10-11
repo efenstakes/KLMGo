@@ -8,11 +8,12 @@ export default LuggageItem = ({ item, styles }) => {
     if( item.weight == 0 ) {
         return(
 
-            <View style={{ ...styles }}>
+            null
+            // <View style={{ ...styles }}>
 
-               <Text style={{ fontSize: 16 }}> Luggage - Not Made </Text>
+            //    <Text style={{ fontSize: 16 }}> Luggage - Not Made </Text>
 
-            </View>
+            // </View>
 
         )
     }// if( item.weight == 0 ) { .. }

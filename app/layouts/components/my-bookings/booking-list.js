@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Paragraph, Title, Text, Button } from 'react-native-paper'
+import { Paragraph, Text, Button } from 'react-native-paper'
 
 
 // import Icon from 'react-native-vector-icons/FontAwesome'
@@ -16,7 +16,7 @@ export default function BookingList({ bookings, goToBooking }) {
         return(
           <View style={{ marginTop: '40%', marginHorizontal: 48 }}>
   
-          <Paragraph style={{ fontSize: 24, lineHeight: 40, alignSelf: 'center' }}> 
+          <Paragraph style={{ fontSize: 20, lineHeight: 40, alignSelf: 'center' }}> 
               You dont have any bookings yet 
           </Paragraph>
           <AwesomeIcon name='frown-o' 

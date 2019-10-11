@@ -7,12 +7,12 @@ export default PetItem = ({ item, styles }) => {
 
     if( item.number == 0 || item.weight == 0 ) {
         return(
+            null
+            // <View style={{ ...styles }}>
 
-            <View style={{ ...styles }}>
+            //    <Text style={{ fontSize: 16 }}> Unaccompanied Minors - Not Made </Text>
 
-               <Text style={{ fontSize: 16 }}> Unaccompanied Minors - Not Made </Text>
-
-            </View>
+            // </View>
 
         )
     }// if( item.weight == 0 ) { .. }
