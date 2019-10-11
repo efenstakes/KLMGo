@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, AsyncStorage, StyleSheet, Image, ImageBackground } from 'react-native'
+import { View, ScrollView, StyleSheet, Image, ImageBackground } from 'react-native'
 import { Paragraph, Button, Text } from 'react-native-paper'
 
 import { Card, Icon } from 'react-native-elements'
@@ -7,9 +7,11 @@ import { Card, Icon } from 'react-native-elements'
 // components
 import HomeServiceCard from '../components/home-service-card'
 
-
+// storage
+import Storage from '../../models/storage'
 // server domain
-const SERVER = 'http://localhost:4445'
+import Net from '../../models/net'
+
 
 // home  
 class HomeActivity extends React.Component {
@@ -44,85 +46,64 @@ class HomeActivity extends React.Component {
           woo_text: 'Want to know how to book and travel as a group?',
           image: require('../../assets/images/groupe.jpg')
         }
-      ]
+      ],
+
+      user: {}
 
     }
 
     this.viewServiceInstructions = this.viewServiceInstructions.bind(this)
-  }
+  }// constructor(props) { .. }
 
-  componentDidMount() {
-    // AsyncStorage.setItem('testkeya', 'some string here')
-  }// componentWillMount() { .. }
+  componentDidMount() { }// componentWillMount() { .. }
     
   render() {
     return (
       <ScrollView>
 
-        {/* <Card
-            containerStyle={{ 
-                  overflow: 'hidden', borderBottomRightRadius: 16,
-                  borderBottomLeftRadius: 16
-                }}
-            featuredSubtitle={ 'Check Out Our New Services' }
-            featuredSubtitleStyle={{ position: 'absolute', bottom: 8, left: 8 }}
-            image={ require('../../assets/images/klm-1.jpg') }
-          /> */}
+      <ImageBackground
+              source={ require('../../assets/images/plane_wing.jpg') }
+              style={{ 
+                width: '100%', height: 200, 
+                borderRadius: 50,
+                borderBottomLeftRadius: 16, 
+                borderBottomRightRadius: 16, 
+                justifyContent: 'flex-end',
+                marginBottom: 24,
+                // transform: [{ rotate: '180deg' }]
+              }} 
+          >
 
-        <ImageBackground
-                source={ require('../../assets/images/plane_wing.jpg') }
-                style={{ 
-                  width: '100%', height: 200, 
-                  borderRadius: 50,
-                  borderBottomLeftRadius: 16, 
-                  borderBottomRightRadius: 16, 
-                  justifyContent: 'flex-end',
-                  marginBottom: 24,
-                  // transform: [{ rotate: '180deg' }]
-                }} 
-            >
+          <Image
+              source={ require('../../assets/icons/klm_go_logo.png') } 
+              style={{ 
+                height: 112, width: 112, 
+                borderRadius: 56,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                // margin: 24,
+                // marginRight: 240
+              }} 
+          />  
 
-            <Image
-                source={ require('../../assets/icons/klm_go_logo.png') } 
-                style={{ 
-                  height: 112, width: 112, 
-                  borderRadius: 56,
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  // margin: 24,
-                  // marginRight: 240
-                }} 
-            />  
-
-            <Text style={{ 
-                    marginBottom: 16, marginLeft: 16, fontSize: 18,
-                    fontWeight: 'bold', color: 'black',
-                    alignSelf: 'center' 
-                  }}> 
-              {/* Travel the world with us */}
-              Travel the world with a trusted partner
-            </Text>
-        </ImageBackground>
-
-        {/* <Image
-                source={ require('../../assets/images/container_background.png') }
-                style={{ height: '10%', width: '100%', zIndex: auto }} // , rotation: '180deg'
-            /> */}
-
-        {/* <View style={{ display: none, zIndex: 10, top: 24, left: 24, right: 24, height: '24%', backgroundColor: 'red', color: 'yellow' }}>
-            
-        </View> */}
-
+          <Text style={{ 
+                  marginBottom: 16, marginLeft: 16, fontSize: 18,
+                  fontWeight: 'bold', color: 'black',
+                  alignSelf: 'center' 
+                }}> 
+            {/* Travel the world with us */}
+            Travel the world with a trusted partner
+          </Text>
+      </ImageBackground>
         
-        {
-          this.state.services.map((service, index)=> {
-            return <HomeServiceCard key={index} 
-                        service={service} 
-                        onServiceClick={this.viewServiceInstructions} 
-                      />
-          })
-        }
-
+      {
+        this.state.services.map((service, index)=> {
+          return <HomeServiceCard key={index} 
+                      service={service} 
+                      onServiceClick={this.viewServiceInstructions} 
+                    />
+        })
+      }
 
       {/** book now cta */}
       <View style={{ flex: 1, alignItems: 'stretch', marginVertical: 24, marginHorizontal: 8 }}>
@@ -137,20 +118,13 @@ class HomeActivity extends React.Component {
     )
   }// render() { .. }
 
+
   // redirect user to instrction page
   async viewServiceInstructions(service) {
-        
-    try{
-      await fetch(`${SERVER}/api/faq/visit/no-auth`, {
-        method: 'post', body: JSON.stringify({ section: (service.title).toUpperCase() })
-      })  
-      // alert('made')
-    }catch(e) {
-      // alert(`error in visit ${e}`)
-    }
-
     this.props.navigation.navigate('Instruction', { service: service })
-  }
+  }// async viewServiceInstructions(service) { .. }
+
+ 
   
 }
 
