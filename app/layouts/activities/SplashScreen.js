@@ -7,6 +7,9 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import AsyncStorage from '@react-native-community/async-storage'
 
+// storage vars
+import Storage from '../../models/storage'
+
 
 // splash screen page
 class SplashScreenActivity extends React.Component {
@@ -16,12 +19,12 @@ class SplashScreenActivity extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { }
+    this.state = { todos: [] }
 
     this.goNext = this.goNext.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount() { 
     this.timeout = setTimeout(()=> this.goNext() , 1000)
   }
   componentWillUnmount() {
@@ -39,29 +42,29 @@ class SplashScreenActivity extends React.Component {
            colors={['#2cdeea', '#005B82']} 
            style={[ styles.page, { flex: 1, width: '100%' } ]}>
         
-        <Text style={styles.title_one}> KLM Go </Text>
-        {/* <Paragraph style={{ fontFamily: 'noa', fontSize: 32 }}> KLM GO </Paragraph> */}
-        
-        <Image
-            source={ require('../../assets/icons/klm_go_logo.png') }
-            style={ styles.klm_image }
-          />
+            <Text style={styles.title_one}> KLM Go </Text>
+            {/* <Paragraph style={{ fontFamily: 'noa', fontSize: 32 }}> KLM GO </Paragraph> */}
+            
+            <Image
+                source={ require('../../assets/icons/klm_go_logo.png') }
+                style={ styles.klm_image }
+              />
 
-        <ActivityIndicator animating={true} color='#003145'
-              size='40' style={ styles.klm_spinner } />  
+            <ActivityIndicator animating={true} color='#003145'
+                  size='40' style={ styles.klm_spinner } />  
 
-        <Text style={styles.klm_brandtext}>
-          Journeys of Inspiration made convenient
-        </Text>
-        
+            <Text style={styles.klm_brandtext}>
+              Journeys of Inspiration made convenient
+            </Text>
+            
       </LinearGradient>
       </View>
     )
   }// render() { .. }
 
 
-  async goNext() { 
-    const hasVisited = await AsyncStorage.getItem('klm:go:has-visited')
+  async goNext() {
+    const hasVisited = await AsyncStorage.getItem(Storage.IS_FIRST_VISIT)
 
     if( hasVisited == null ) {
       this.props.navigation.navigate('Tutorial')
@@ -69,19 +72,7 @@ class SplashScreenActivity extends React.Component {
     }
 
     this.props.navigation.navigate('AppHome')
-  }
-  async test() {
-    
-    // try{
-    //   // let string_res = await fetch('192.168.42.3:4445/api/tester')
-    //   let string_res = await fetch('http://10.0.2.2:4445/api/tester')
-    //   // let json_res = await string_res.json()
-    //   alert(string_res)
-    // }catch(e){
-    //   alert(`error ${e}`)
-    // }
-
-  }
+  }// async goNext() { .. }
 
   
 }

@@ -7,6 +7,9 @@ import Swiper from 'react-native-swiper'
 
 import AsyncStorage from '@react-native-community/async-storage'
 
+// storage vars
+import Storage from '../../models/storage'
+
 
 // tutorial page
 class TutorialActivity extends React.Component {
@@ -116,7 +119,7 @@ class TutorialActivity extends React.Component {
   
   async goHome() {
 
-    await AsyncStorage.setItem('klm:go:has-visited', 'oh yes')
+    await AsyncStorage.setItem(Storage.IS_FIRST_VISIT, 'oh no')
 
     this.props.navigation.navigate('AppHome')
   }
