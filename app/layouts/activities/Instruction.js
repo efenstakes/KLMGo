@@ -2,12 +2,12 @@ import React from 'react'
 import { 
         View, StyleSheet, ScrollView, Image, ImageBackground, Dimensions 
       } from 'react-native'
-import { 
-          Paragraph, Button, Text
-      } from 'react-native-paper'
+import { Paragraph, Button, Text } from 'react-native-paper'
 
 import { Rating, Input } from 'react-native-elements'
 
+import AsyncStorage from '@react-native-community/async-storage'
+ 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 // custom components
@@ -20,8 +20,12 @@ import BabiesInstructions from '../components/instructions/babies'
 import PetsInstructions from '../components/instructions/pets'
 
 
+// storage
+import Storage from '../../models/storage'
 // server domain
-const SERVER = 'http://localhost:4445'
+import Net from '../../models/net'
+
+
 
 // Instruction
 class InstructionActivity extends React.Component {
@@ -32,8 +36,9 @@ class InstructionActivity extends React.Component {
     this.state = {
 
       instructions: [],
+      user: {},
 
-      rating_text: '', rating: 5,
+      rating_text: '', rating: 4,
       show_overlay: false
 
     }
@@ -42,11 +47,14 @@ class InstructionActivity extends React.Component {
     this.ratingCompleted = this.ratingCompleted.bind(this)
     this.submitRating = this.submitRating.bind(this)
     this.hideModal = this.hideModal.bind(this)
-    this.getInstructions = this.getInstructions.bind(this)
-  }
+
+    this.getUserIfAny = this.getUserIfAny.bind(this)
+    this.addVisit = this.addVisit.bind(this)
+  }// constructor(props) { .. }
 
   componentDidMount() {
     // this.getInstructions()
+    this.getUserIfAny()
   }
 
   componentWillUnmount() {
@@ -55,6 +63,7 @@ class InstructionActivity extends React.Component {
   
   render() {
     let height = Dimensions.get('window').height
+    let width = Dimensions.get('window').width
     let image_height = height/4
 
     let service = this.props.navigation.getParam('service')
@@ -109,9 +118,8 @@ class InstructionActivity extends React.Component {
         {/** instructions container */}
 
         {/** overlay modal to show when user makes a rating */}
-          <AppResponseOverlayModal 
-              show_overlay={this.state.show_overlay} 
-              hideModal={ this.hideModal } 
+          <AppResponseOverlayModal  width={ width }
+              show_overlay={this.state.show_overlay} hideModal={ this.hideModal } 
           ></AppResponseOverlayModal>
         {/** overlay modal to show when user makes a rating */}
          
@@ -162,6 +170,15 @@ class InstructionActivity extends React.Component {
     )
   }// render() { .. }
   
+  // get user from app storage
+  async getUserIfAny() {
+    let user = await AsyncStorage.getItem(Storage.USER)
+    if( user != null ) {
+      this.setState({ user: JSON.parse(user) })
+      this.addVisit()
+    }
+  }// async getUserIfAny() { .. }
+
   // set rating whenever rating is done
   ratingCompleted(rating) {
     this.setState({ rating: rating })
@@ -176,38 +193,172 @@ class InstructionActivity extends React.Component {
   async submitRating() {
     this.setState({ show_overlay: true })
 
-    let service = this.props.navigation.getParam('service')
-    let { rating, rating_text } = this.state
+    let service = this.props.navigation.getParam('service') 
+    let { rating, rating_text, user } = this.state
+    let rating_data = { rating, message: rating_text, section: (service.act_name).toUpperCase() }
+
+    if( !user.hasOwnProperty('password') ) {
+
+      try{
+
+        await fetch(`${Net.SERVER}/api/faq/rating/no-auth`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, 
+          body: JSON.stringify(rating_data)
+        })
+  
+      }catch(e){  }
+
+    }// if( !user.hasOwnProperty('password') ) { .. }
+
     
-    const netCall = await fetch(`${SERVER}/api/faq/rating/no-auth`, {
-      method: 'post', body: JSON.stringify({ rating, message: rating_text, section: (service.title).toUpperCase() })
+        
+    try{ console.log('rate with token ', token)
+
+      let token = await AsyncStorage.getItem(Storage.TOKEN)
+      let token_offer_time = await AsyncStorage.getItem(Storage.TOKEN_TIME)
+
+      console.log('(Date.now() - parseFloat(token_offer_time) ', (Date.now() - parseFloat(token_offer_time)), ' bool ', ((Date.now() - parseFloat(token_offer_time)) > 300000) )
+
+      console.log('vook with token ', token)
+      // if token expired
+      if( token == undefined || token == null || token_offer_time == null || ((Date.now() - parseFloat(token_offer_time)) > 300000 ) ) {
+        console.log('logiin')
+        let login_result = await fetch(`${Net.SERVER}/api/user/login`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, 
+          body: JSON.stringify({ email: user.email, password: user.password })
+        })
+
+        let login_result_json = await login_result.json()
+        
+        token = login_result_json.token
+        console.log('login token ', token)
+      }// if( token_offer_time == null || (Date.now() .. }
+
+      console.log('lets rate ')
+      let rating_result = await fetch(`${Net.SERVER}/api/faq/rating/`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Authorization': `Bearer ${token}`
+        }, 
+        body: JSON.stringify(rating_data)
+      })
+
+      console.log('lets rate 2 ', rating_result)
+      
+      
+    }catch(e) {
+      console.log('rating err ', e)
+    }
+
+
+
+
+  }// async submitRating() { .. }
+
+
+  async addVisit() {
+    let { user } = this.state
+    let service = this.props.navigation.getParam('service')
+    let visit_data = { section: (service.act_name).toUpperCase() }
+
+    if( !user.hasOwnProperty('password') ) {
+
+      fetch(`${Net.SERVER}/api/faq/visit/no-auth`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }, 
+        body: JSON.stringify(visit_data)
+      }) 
+      .then((req)=> req.json()).then((res)=> { return })
+      .catch((error)=>{
+        console.log('error in no auth ', error)
+        return
+      }) 
+      
+      
+    }// if( !user.hasOwnProperty('password') ) { .. }
+
+
+    let token = await AsyncStorage.getItem(Storage.TOKEN)
+    let token_offer_time = await AsyncStorage.getItem(Storage.TOKEN_TIME)
+
+    console.log('(Date.now() - parseFloat(token_offer_time) ', (Date.now() - parseFloat(token_offer_time)), ' bool ', ((Date.now() - parseFloat(token_offer_time)) > 300000) )
+
+    console.log('visit with token ', token)
+    // if token expired
+    if( token == undefined || token == null || token_offer_time == null || ((Date.now() - parseFloat(token_offer_time)) > 300000 ) ) {
+      console.log('logiin ', user)
+      fetch(`${Net.SERVER}/api/user/login`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }, 
+        body: JSON.stringify({ email: user.email, password: user.password })
+      })
+      .then((rq)=> rq.json())
+      .then((res)=> {
+
+          AsyncStorage.setItem(Storage.TOKEN, res.token)
+          AsyncStorage.setItem(Storage.TOKEN_TIME, (Date.now()).toString() )
+          
+          // add visit
+          console.log('calling this.addVisit')
+          console.log('lets visit ')
+          fetch(`${Net.SERVER}/api/faq/visit/`, {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${res.token}`
+            }, 
+            body: JSON.stringify(visit_data)
+          })
+          .then((req)=> req.json())
+          .then((res)=> {
+            console.log('visit added ', res) 
+            return
+          })
+          .catch((error)=> {
+            console.log('visit err ', error) 
+            return
+          })
+
+      })
+      .catch((error)=> { 
+        console.log('promise error')
+        return
+      })
+
+    }// if( token_offer_time == null || (Date.now() .. }
+
+    console.log('lets visit ')
+    fetch(`${Net.SERVER}/api/faq/visit/`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${token}`
+      }, 
+      body: JSON.stringify(visit_data)
     })
-  }
+    .then((req)=> req.json())
+    .then((res)=> { console.log('visit 2 added ', res) })
+    .catch((error)=> { console.log('visit 2 err ', error) })
+
+  }// addVisit(status) { .. }
+
 
   // hide the overlay modal
   hideModal() {
     this.setState({ show_overlay: false })
   }
 
-  async getInstructions() {
-
-    let instructions = [ 
-      "Look for the kid in question",
-      "Ensure that you also go online and fill the minors form",
-      "The child has to be tested for any diseases before travel",
-      "The child has to be checked, vaccinated against any diseases before travel",
-      "The child has to be **** for any diseases before travel",
-      "The child has to be ++++ for any diseases before travel"
-    ]
-    this.setState({ instructions })
-    return
-    try{
-      const instructionCall = await fetch(`${SERVER}/api/instruction`)
-      const instructions = await instructionCall.json()
-      this.setState({ instructions: instructions })
-    }catch(e){}
-
-  }
 
   
 } 

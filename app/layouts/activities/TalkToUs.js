@@ -5,10 +5,18 @@ import { Input } from 'react-native-elements'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import AsyncStorage from '@react-native-community/async-storage'
+ 
 // custom components
 import ContactItem from '../components/contact-item'
 import AppResponseOverlayModal from '../components/app-response-overlay'
 import ActivityTopImage from '../components/activity-top-image'
+
+// storage
+import Storage from '../../models/storage'
+// server domain
+import Net from '../../models/net'
+
 
 
 // talk to us
@@ -19,13 +27,20 @@ class TalkToUsActivity extends React.Component {
   
     this.state = {
       response_text: '', response_text_error: '',
-      show_overlay: false
+      show_overlay: false,
+
+      user: {}
     }
     
     this.submitResponse = this.submitResponse.bind(this)
     this.hideModal = this.hideModal.bind(this)
-  }
 
+    this.getUserIfAny = this.getUserIfAny.bind(this)
+  }//constructor(props) { .. }
+
+  componentDidMount() {
+    this.getUserIfAny()
+  }
   
   render() {
     let height = Dimensions.get('window').height
@@ -34,23 +49,6 @@ class TalkToUsActivity extends React.Component {
 
     return (
       <ScrollView>
-
-        
-        {/* <View style={{ flex: 1, marginHorizontal: '4%', marginTop: '4%' }}>
-
-          <Image
-                source={ require('../../assets/images/talk_to_us.jpg') }
-                style={{ 
-                  height: 200, 
-                  width: '100%', 
-                  borderRadius: 16,
-                  justifyContent: 'center',
-                  // margin: 24,
-                  // marginRight: 240
-                }} 
-            />
-
-        </View> */}
 
         <ActivityTopImage image={ require('../../assets/images/talk_to_us.jpg') }
                           height={ image_height } />
@@ -182,9 +180,8 @@ class TalkToUsActivity extends React.Component {
           
 
           {/** overlay modal to show when user makes a rating */}
-          <AppResponseOverlayModal 
-                show_overlay={this.state.show_overlay} 
-                hideModal={ this.hideModal } 
+          <AppResponseOverlayModal width={ width }
+                show_overlay={this.state.show_overlay} hideModal={ this.hideModal } 
             ></AppResponseOverlayModal>
           {/** overlay modal to show when user makes a rating */}
          
@@ -196,6 +193,14 @@ class TalkToUsActivity extends React.Component {
     )
   }// render() { .. }
 
+ 
+  // get user from app storage
+  async getUserIfAny() {
+    let user = await AsyncStorage.getItem(Storage.USER)
+    if( user != null ) {
+      this.setState({ user: JSON.parse(user) })
+    }
+  }// async getUserIfAny() { .. }
 
   // submit what user wrote
   async submitResponse() {
@@ -203,7 +208,7 @@ class TalkToUsActivity extends React.Component {
     this.setState({ response_text_error: '' })
 
     // get response data
-    let { response_text, response_text_error } = this.state
+    let { response_text, response_text_error, user } = this.state
     
     // sanitize data
     response_text = response_text.trim()
@@ -213,15 +218,68 @@ class TalkToUsActivity extends React.Component {
       this.setState({ response_text_error })
       return
     }
-
-    // make network request here
-    this.setState({ show_overlay: true })
     
-    try{
-      await fetch(`${SERVER}/api/faq/rating/no-auth`, {
-        method: 'post', body: JSON.stringify({ rating: 4, message: response_text, section: 'OTHER' })
-      })  
-    }catch(e) {}
+    let rating_data = { rating: 4, message: response_text, section: 'OTHER' }
+    
+    // make network request here
+    if( !user.hasOwnProperty('password') ) {
+
+      try{
+        await fetch(`${Net.SERVER}/api/faq/rating/no-auth`, {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },  
+            body: JSON.stringify(rating_data)
+        })  
+        this.setState({ show_overlay: true })
+      }catch(e) { }
+
+    }// if( !user.hasOwnProperty('password') ) { .. }
+
+        
+    try{ console.log('rate with token ', token)
+
+      let token = await AsyncStorage.getItem(Storage.TOKEN)
+      let token_offer_time = await AsyncStorage.getItem(Storage.TOKEN_TIME)
+
+      console.log('(Date.now() - parseFloat(token_offer_time) ', (Date.now() - parseFloat(token_offer_time)), ' bool ', ((Date.now() - parseFloat(token_offer_time)) > 300000) )
+
+      console.log('vook with token ', token)
+      // if token expired
+      if( token == undefined || token == null || token_offer_time == null || ((Date.now() - parseFloat(token_offer_time)) > 300000 ) ) {
+        console.log('logiin ', user)
+        let login_result = await fetch(`${Net.SERVER}/api/user/login`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, 
+          body: JSON.stringify({ email: user.email, password: user.password })
+        })
+
+        let login_result_json = await login_result.json()
+        
+        token = login_result_json.token
+        console.log('login token ', token)
+      }// if( token_offer_time == null || (Date.now() .. }
+
+      console.log('lets rate ')
+      let rating_result = await fetch(`${Net.SERVER}/api/faq/rating/`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Authorization': `Bearer ${token}`
+        }, 
+        body: JSON.stringify(rating_data)
+      })
+      this.setState({ show_overlay: true })
+      console.log('lets rate 2 ', rating_result)
+      
+      
+    }catch(e) {
+      console.log('rating err ', e)
+    }
+
 
   }// submitResponse() { .. }
 
