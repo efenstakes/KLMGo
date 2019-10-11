@@ -5,7 +5,7 @@ import { Button, Text } from 'react-native-paper'
 import { Overlay } from 'react-native-elements'
 
 
-export default function AppResponseOverlayModal ({ show_overlay, hideModal }) {
+export default AppResponseOverlayModal = ({ show_overlay, hideModal, width })=> {
     
   return(
         
@@ -14,7 +14,7 @@ export default function AppResponseOverlayModal ({ show_overlay, hideModal }) {
       windowBackgroundColor="rgba(255, 255, 255, .5)"
       overlayBackgroundColor='white'
       onBackdropPress={() => hideModal() }
-      width='80%' height='72%' 
+      width='72%' height='72%' 
     >
       {/** width='48%' height='48%' */}
       <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -22,19 +22,23 @@ export default function AppResponseOverlayModal ({ show_overlay, hideModal }) {
         <View style={{ flex: 1 }}></View>
         <View style={{ flex: 10, flexDirection: 'column', alignItems: 'center' }}>
 
-          <Text style={{ marginTop: 16, fontSize: 16 }}> Thank you for your rating </Text>
+          <Text style={{ marginTop: '8%', fontSize: 16 }}> Thank you for your rating </Text>
           
           <Image
             source={ require('../../assets/icons/klm_go_logo.png') }
-            style={ styles.overlay_image }
+            style={[ styles.overlay_image, {
+              width: (width/4), 
+              height: (width/4), 
+              borderRadius: (width/8), 
+            } ]}
           />
 
-          <Text style={{ marginTop: 48, fontSize: 16 }}> 
+          <Text style={{ marginTop: '16%', fontSize: 24 }}> 
             We are always listening 
           </Text>
           
-          <Button mode='contained'
-            style={{ position: 'absolute', bottom: 16, width: '100%' }}
+          <Button mode='contained' uppercase={ true }
+            style={{ position: 'absolute', bottom: '8%', width: '100%', borderRadius: 24 }}
             onPress={ ()=> hideModal() }> Close </Button>
 
         </View>
