@@ -1,20 +1,30 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, Picker } from 'react-native'
+import { StyleSheet, View, ScrollView, Picker, Dimensions } from 'react-native'
 import { Paragraph, Button, List, Text, ProgressBar, Colors } from 'react-native-paper'
 
 import { CheckBox, Input  } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
 
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
+
+import AsyncStorage from '@react-native-community/async-storage'
  
 // components
 import UserDetailForm from '../components/user-detail-form'
+import UserDetailDisplay from '../components/user-detail-display'
 import GroupBookingForm from '../components/group-booking-form'
 import BabyBookingForm from '../components/baby-booking-form'
 import LuggageBookingForm from '../components/luggage-booking-form'
 import PetBookingForm from '../components/pet-booking-form'
 
 import BookingSuccessOverlayModal from '../components/booking-success-overlay'
+
+
+// storage
+import Storage from '../../models/storage'
+// server domain
+import Net from '../../models/net'
+
 
 // book
 class BookingActivity extends React.Component {
@@ -78,8 +88,16 @@ class BookingActivity extends React.Component {
     this.isDestinationValid = this.isDestinationValid.bind(this)
     this.isBookingsValid = this.isBookingsValid.bind(this)
     
+    this.getUserIfAny = this.getUserIfAny.bind(this)
+    this.seeForm = this.seeForm.bind(this)
+    this.goToLogin = this.goToLogin.bind(this)
+
     this.hideModal = this.hideModal.bind(this)
   }// constructor(props) { .. }
+
+  componentDidMount() {
+    this.getUserIfAny()
+  }// componentDidMount() { .. }
 
   booking_forms() {
     return(
@@ -160,16 +178,6 @@ class BookingActivity extends React.Component {
             }}
             onDateChange={(date) => { this.setState({ travel_date: date}) } }
           />
-          {/* <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}> { this.state.errors.travel_date } </Text> */}
-          {/* {
-            this.state.errors.travel_date.map((error)=> {
-              return (
-                  <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}>
-                    { error }
-                  </Text> 
-              )
-            })
-          } */}
           {
             this.state.errors.travel_date.length > 0 && 
             <Text style={{ color: '#E37222', fontSize: 12, marginTop: 8 }}>
@@ -211,6 +219,8 @@ class BookingActivity extends React.Component {
 
   
   render() {
+    let width = Dimensions.get('window').width
+    let height = Dimensions.get('window').height
 
     let show = null
     let prev_btn = <Button onPress={ this.goPrevious } style={ styles.nav_buttons } mode="outlined" uppercase={false}> Previous </Button>
@@ -222,23 +232,49 @@ class BookingActivity extends React.Component {
       prev_btn = null
     } else if(  this.state.step == 2 ) {
       show = this.destination_form()
+    } else if( this.state.step == 3 && this.state.user.hasOwnProperty('password') && !this.state.see_form ) {
+
+      show = <UserDetailDisplay user={this.state.user} width={width}
+                    goToLogin={ this.goToLogin } seeForm={ this.seeForm } 
+                />
+      next_btn = null
+      cta_btn = <Button onPress={ this.book } style={ styles.cta_btn } mode="contained" uppercase={false}> Book Now </Button>
+
+    } else if( this.state.step == 3 && this.state.see_form ) {
+      show = <UserDetailForm user={this.state.user} 
+                            klmOnDataChange={this.userDataChange}
+                            errors={this.state.errors.user} />
+      next_btn = null
+      cta_btn = <Button onPress={ this.book } style={ styles.cta_btn } mode="contained" uppercase={false}> Book Now </Button>
     } else {
       show = <UserDetailForm user={this.state.user} 
-                             klmOnDataChange={this.userDataChange}
-                             errors={this.state.errors.user} />
+                            klmOnDataChange={this.userDataChange}
+                            errors={this.state.errors.user} />
       next_btn = null
       cta_btn = <Button onPress={ this.book } style={ styles.cta_btn } mode="contained" uppercase={false}> Book Now </Button>
     }
+
+    
 
     return (
       <ScrollView style={ styles.page }>
         
         {/** show progress */}
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: '8%' }}>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: '8%', marginBottom: '4%' }}>
 
           <View style={{ flex: 1 }}></View>
           <View style={{ flex: 2 }}>
-            <ProgressBar progress={ ( this.state.step/3 ) } color={Colors.lightBlueA100} />
+            {/* <ProgressBar progress={ ( this.state.step/3 ) } color={Colors.lightBlueA100} /> */}
+            {/** 003F72 */}
+            <View style={{ 
+                    height: 80, width: 80, borderRadius: 40, 
+                    borderColor: '#00A1DE', borderWidth: 2,
+                    justifyContent: 'center', alignItems: 'center', 
+                    alignSelf: 'center' 
+                  }}>
+              <Text style={{ color: '#00A1DE', fontSize: 24 }}> { this.state.step }/3 </Text>
+            </View>
+
           </View>
           <View style={{ flex: 1 }}></View>
 
@@ -270,7 +306,7 @@ class BookingActivity extends React.Component {
         
         
         {/** overlay modal to show when user booking is successful */}
-        <BookingSuccessOverlayModal 
+        <BookingSuccessOverlayModal width={ width } height={ height }
               show_overlay={this.state.show_overlay} 
               hideModal={ this.hideModal } 
           ></BookingSuccessOverlayModal>
@@ -280,6 +316,22 @@ class BookingActivity extends React.Component {
       </ScrollView>
     )
   }// render() { .. }
+
+  goToLogin() {
+    this.props.navigation.navigate('Login')
+  }// goToLogin() { .. }
+
+  seeForm() {
+    this.setState({ see_form: true })
+  }
+
+  // get user from app storage
+  async getUserIfAny() {
+    let user = await AsyncStorage.getItem(Storage.USER)
+    if( user != null ) {
+      this.setState({ user: JSON.parse(user) })
+    }
+  }// async getUserIfAny() { .. }
 
   goNext() {
     let current_step = this.state.step
@@ -301,7 +353,7 @@ class BookingActivity extends React.Component {
     let errors = this.state.errors
     errors.booking = ''
     this.setState({ step: next_step, errors })
-  }
+  }// goNext() { .. }
   goPrevious() {
     let current_step = this.state.step
     if( current_step == 1 ) return 
@@ -312,7 +364,7 @@ class BookingActivity extends React.Component {
     let errors = this.state.errors
     errors.booking = ''
     this.setState({ step: next_step, errors })
-  }
+  }// goPrevious() { .. }
 
   // set properties for the user 
   userDataChange(property, value) {
@@ -343,7 +395,7 @@ class BookingActivity extends React.Component {
     }
 
     this.setState({ baby })
-  }
+  }// babyDataChange(property, value) { .. }
   // set properties for the group structure 
   groupDataChange(property, value) {
     let group = this.state.group 
@@ -367,7 +419,7 @@ class BookingActivity extends React.Component {
     }
 
     this.setState({ group })
-  }
+  }// groupDataChange(property, value) { .. }
   // set properties for the luggage structure
   luggageDataChange(property, value) {
     let luggage = this.state.luggage 
@@ -395,7 +447,7 @@ class BookingActivity extends React.Component {
     }
 
     this.setState({ pet })
-  }
+  }// petDataChange(property, value) { .. }
 
 
 
@@ -450,7 +502,7 @@ class BookingActivity extends React.Component {
         return false
     }    
     
-    alert('no errors')
+    console.log('no errors')
     return true
   }// isUserValid() { .. }
 
@@ -496,7 +548,7 @@ class BookingActivity extends React.Component {
         return false
     }    
     
-    alert('no errors in destinatn and travel date')
+    console.log('no errors in destinatn and travel date')
     
     return true
   }// isDestinationValid() { .. }
@@ -532,7 +584,7 @@ class BookingActivity extends React.Component {
     if( pet.number > 0 && pet.weight == 0 ) {
       errors.pet.weight.push('Pet weight should be provided')
       
-      // alert(errors.pet.weight.join('\n'))
+      // console.log(errors.pet.weight.join('\n'))
       
       if( baby.number == 0 && (group.number < 2 || group.name.length < 5) && luggage.weight == 0 ) {
         let apperrors = this.state.errors
@@ -563,12 +615,94 @@ class BookingActivity extends React.Component {
 
 
   // make user booking
-  book() {
-    if( !this.isUserValid() ) return
+  async book() {
+    if( !this.state.user.hasOwnProperty('password') && !this.isUserValid() ) return
 
-    let user = this.state.user
+    let user = this.state.user 
+    let { password, ...uzer } = user
+    let { pet, baby, group, luggage, travel_date, destination } = this.state
+    let classe = this.state.class
+    let bookings = { pet, umnr: baby, group, luggage }
+
+    let booking_result
+    if( !user.hasOwnProperty('password') ) { console.log('lets go no token')
+      
+      try{
+        booking_result = await fetch(`${Net.SERVER}/api/book/no-auth`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, 
+          body: JSON.stringify({ bookings, user: uzer, destination, travel_date, class: classe })
+        })
+  
+        let booking_result_json = await booking_result.json()
+  
+        console.log(booking_result_json.saved)
+        if( booking_result_json.saved ) {
+          this.setState({ show_overlay: true })
+        }
+
+      }catch(e) {}
+
+      return
+    }
     
-    this.setState({ show_overlay: true })
+    try{ console.log('vook with token ', token)
+
+      let token = await AsyncStorage.getItem(Storage.TOKEN)
+      let token_offer_time = await AsyncStorage.getItem(Storage.TOKEN_TIME)
+
+      console.log('(Date.now() - parseFloat(token_offer_time) ', (Date.now() - parseFloat(token_offer_time)))
+
+      console.log('vook with token ', token)
+      // if token expired
+      // if( token == undefined || token == null || token_offer_time == null || ((Date.now() - parseFloat(token_offer_time)) > 3000000 ) ) {
+console.log('logiin')
+        let login_result = await fetch(`${Net.SERVER}/api/user/login`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, 
+          body: JSON.stringify({ email: user.email, password: user.password })
+        })
+
+        let login_result_json = await login_result.json()
+        
+        token = login_result_json.token
+        console.log('login token ', token)
+      // }// if( token_offer_time == null || (Date.now() .. }
+
+      console.log('lets book ')
+      booking_result = await fetch(`${Net.SERVER}/api/book`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Authorization': `Bearer ${token}`
+        }, 
+        body: JSON.stringify({ bookings, user: uzer, destination, travel_date, class: classe })
+      })
+
+      console.log('lets book 2 ', booking_result)
+      
+      if( booking_result.status != 200 ) {
+        console.log('error in request')
+        let app_errors = this.state.errors
+        app_errors.booking = 'There was an error making your booking. Try after a while'
+        this.setState({ errors: app_errors })
+      }
+      let booking_result_json = await booking_result.json()
+      
+      console.log('save status ', booking_result_json)
+      if( booking_result_json.saved ) {
+        this.setState({ show_overlay: true })
+      } 
+      
+    }catch(e) {
+      console.log('booking err ', e)
+    }
+
+    
 
   }// book() { .. }
 
@@ -617,7 +751,8 @@ const styles = StyleSheet.create({
   },
 
   error_text: {
-    color: '#E37222'
+    color: '#E37222',
+    fontSize: 12
   }
 
 })
