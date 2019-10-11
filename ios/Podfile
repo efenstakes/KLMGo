@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'KlmGo' do
-  # Pods for KlmGo
+target 'KLMGo' do
+  # Pods for KLMGo
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -30,7 +30,7 @@ target 'KlmGo' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  target 'KlmGoTests' do
+  target 'KLMGoTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -38,10 +38,10 @@ target 'KlmGo' do
   use_native_modules!
 end
 
-target 'KlmGo-tvOS' do
-  # Pods for KlmGo-tvOS
+target 'KLMGo-tvOS' do
+  # Pods for KLMGo-tvOS
 
-  target 'KlmGo-tvOSTests' do
+  target 'KLMGo-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
