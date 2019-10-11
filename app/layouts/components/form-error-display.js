@@ -6,8 +6,8 @@ export default function FormErrorDisplay ({ errors }){
   return(
     <View style={{ marginLeft: 8, marginBottom: 16, marginTop: 8 }}>
         {
-            errors.map((error)=> {
-                return <Text style={{ color: 'red' }}> { error } </Text>
+            errors.map((error, index)=> {
+                return <Text style={{ color: '#E37222', fontSize: 16 }} key={index}> { error } </Text>
             })
         }
     </View>

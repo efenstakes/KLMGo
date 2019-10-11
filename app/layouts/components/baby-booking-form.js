@@ -47,7 +47,7 @@ class BabyBookingForm extends React.Component {
                     > - </Button>
  
                </View>
-               <View style={{ flex: 2, alignItems: 'center' }}>
+               <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                     <Text> {this.props.baby.number} </Text>
                </View>
                <View style={{ flex: 2, alignItems: 'center' }}>

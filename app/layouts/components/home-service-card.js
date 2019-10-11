@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         margin: '2%',
         paddingTop: '0%',
         // backgroundColor: 'lightgray',
-        borderRadius: 16,
+        borderRadius: 24,
         // borderBottomRightRadius: 8,
         overflow: 'hidden'
     },

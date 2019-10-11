@@ -20,7 +20,7 @@ class GroupBookingForm extends React.Component {
     }// constructor(props) { .. }
   
     componentDidMount() {
-        // alert(this.props.errors.name.length)
+        // console.log(this.props.errors.name.length)
     }
   
     render() {
@@ -42,7 +42,7 @@ class GroupBookingForm extends React.Component {
                     > - </Button>
 
                 </View>
-                <View style={{ flex: 2, alignItems: 'center' }}>
+                <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                     <Text> {this.props.group.number} </Text>
                 </View>
                 <View style={{ flex: 2, alignItems: 'center' }}>

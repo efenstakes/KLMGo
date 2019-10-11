@@ -17,11 +17,8 @@ class PetBookingForm extends React.Component {
 
     constructor(props) {
         super(props)
-        // alert(this.props.errors)
-        this.state = {
-            number: '', weight: 0, carriage: null, 
-            is_returning: false, instructions: ''
-        }
+        // console.log(this.props.errors)
+        this.state = { }
     }// constructor(props) { .. }
   
   
@@ -43,7 +40,7 @@ class PetBookingForm extends React.Component {
                     > - </Button>
 
                 </View>
-                <View style={{ flex: 2, alignItems: 'center' }}>
+                <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                     <Text> {this.props.pet.number} </Text>
                 </View>
                 <View style={{ flex: 2, alignItems: 'center' }}>
