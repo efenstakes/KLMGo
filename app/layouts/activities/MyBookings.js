@@ -12,6 +12,9 @@ import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
 // custom components
 import UserNotLoggedIn from '../components/my-bookings/user-not-logged-in'
 import BookingList from '../components/my-bookings/booking-list'
+import IsLoading from '../components/my-bookings/is_loading'
+import NetworkError from '../components/my-bookings/network-error'
+
 
 // storage
 import Storage from '../../models/storage'
@@ -38,66 +41,27 @@ class MyBookingsActivity extends React.Component {
     this.goToLogin = this.goToLogin.bind(this)
     this.goToRegister = this.goToRegister.bind(this)
     this.goToBooking = this.goToBooking.bind(this)
-    
-    this.network_error_content = this.network_error_content.bind(this)
+    this.getUserAndBookings = this.getUserAndBookings.bind(this)
+    this.getBookings = this.getBookings.bind(this)
   }// constructor(props) { .. }
 
   async componentDidMount() {
     this.getUserAndBookings()
   }
 
-  is_loading_content() {
-    return(
-
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-        <Text style={{ fontSize: 20, marginTop: '48%', marginBottom: '8%' }}> 
-          Please wait while we get your Bookings 
-        </Text>
-
-        <ActivityIndicator animating={true} color={ '#2cdeea' } size='large' />
-
-  
-      </View>
-
-    )
-  }// is_loading_content() { .. }
-
-  
-  network_error_content() {
-    return(
-
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-        <Text style={{ fontSize: 20, marginTop: '48%', marginBottom: '8%' }}> 
-          A Network Error Occured While Getting Your Bookings 
-        </Text>
-
-        {/* <AwesomeIcon name='network-error' color={ '#2cdeea' } size='large' /> */}
-
-        <Button uppercase={false} mode='contained' onPress={ this.getUserAndBookings }
-                  style={{ marginVertical: 48, borderRadius: 24 }}
-              > Retry </Button>
-  
-
-      </View>
-
-    )
-  }// network_error_content() { .. }
-
   
   render() {
 
-    let show = <BookingList bookings={this.state.bookings} goToBooking={this.goToBooking} /> //this.show_bookings()
+    let show = <BookingList bookings={this.state.bookings} goToBooking={this.goToBooking} /> 
     if( !this.state.user.hasOwnProperty('name') ) {
-      show = <UserNotLoggedIn goToLogin={this.goToLogin} goToRegister={this.goToRegister} />  // this.render_not_logged_in()
+      show = <UserNotLoggedIn goToLogin={this.goToLogin} goToRegister={this.goToRegister} /> 
     }
 
-    if( this.state.is_loading ) {
-      show = this.is_loading_content()
-    }
     if( this.state.network_errored ) {
-      show = this.network_error_content()
+      show = <NetworkError message='A Network Error Occured While Getting Your Bookings ' retry={this.getBookings} /> 
+    }
+    if( this.state.is_loading ) {
+      show = <IsLoading message='Please wait while we get your Bookings ' />  
     }
 
     return (
