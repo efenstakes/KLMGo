@@ -28,6 +28,7 @@ class TalkToUsActivity extends React.Component {
     this.state = {
       response_text: '', response_text_error: '',
       show_overlay: false,
+      is_submitting_rating: false, 
 
       user: {}
     }
@@ -170,9 +171,11 @@ class TalkToUsActivity extends React.Component {
                 errorStyle={{ color: '#E37222' }}
               />
 
-            <Button uppercase={false} mode="contained" onPress={ this.submitResponse } 
+            <Button uppercase={false} mode="contained" 
+                    loading={ this.state.is_submitting_rating }
+                    onPress={ this.submitResponse } 
                     style={ styles.response_button }>
-              Drop my Note
+              { this.state.is_submitting_rating ? 'Submitting Your Note' : 'Drop my Note' }
             </Button>
 
           </View>
@@ -221,6 +224,7 @@ class TalkToUsActivity extends React.Component {
     
     let rating_data = { rating: 4, message: response_text, section: 'OTHER' }
     
+    this.setState({ is_submitting_rating: true })
     // make network request here
     if( !user.hasOwnProperty('password') ) {
 
@@ -232,8 +236,10 @@ class TalkToUsActivity extends React.Component {
             },  
             body: JSON.stringify(rating_data)
         })  
-        this.setState({ show_overlay: true })
-      }catch(e) { }
+        this.setState({ is_submitting_rating: false, show_overlay: true })
+      }catch(e) {
+        this.setState({ is_submitting_rating: false })
+      }
 
     }// if( !user.hasOwnProperty('password') ) { .. }
 
@@ -272,12 +278,12 @@ class TalkToUsActivity extends React.Component {
         }, 
         body: JSON.stringify(rating_data)
       })
-      this.setState({ show_overlay: true })
+      this.setState({ is_submitting_rating: false, show_overlay: true })
       console.log('lets rate 2 ', rating_result)
-      
       
     }catch(e) {
       console.log('rating err ', e)
+      this.setState({ is_submitting_rating: false })
     }
 
 

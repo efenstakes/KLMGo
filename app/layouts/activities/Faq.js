@@ -33,7 +33,8 @@ class FaqActivity extends React.Component {
       user: {},
       
       rating_text: '', rating: 5,
-      show_overlay: false
+      show_overlay: false,
+      is_submitting_rating: false
     }
 
     this.submitRating = this.submitRating.bind(this)
@@ -117,8 +118,11 @@ class FaqActivity extends React.Component {
             />
           {/** rating response */}
 
-          <Button uppercase={false} mode="contained" onPress={ this.submitRating } style={ styles.rating_button }>
-            Rate The Faq
+          <Button uppercase={false} mode="contained" 
+                  loading={ this.state.is_submitting_rating } 
+                  onPress={ this.submitRating } 
+                  style={ styles.rating_button }>
+            { this.state.is_submitting_rating ? 'Submitting Your Rating': 'Rate The Faq' }
           </Button>
 
         </View>
@@ -148,7 +152,7 @@ class FaqActivity extends React.Component {
 
   //  submit rating 
   async submitRating() {
-    this.setState({ show_overlay: true })
+    this.setState({ is_submitting_rating: true })
 
     let { rating, rating_text, user } = this.state
     let rating_data = { rating, message: rating_text, section: 'FAQ' }
@@ -163,7 +167,10 @@ class FaqActivity extends React.Component {
           }, 
           body: JSON.stringify(rating_data)
         })
-      }catch(e){ }
+        this.setState({ is_submitting_rating: false, show_overlay: true })
+      }catch(e){
+        this.setState({ is_submitting_rating: false })
+      }
 
       return
     }// if( !user.hasOwnProperty('password') ) { .. }
@@ -204,11 +211,13 @@ class FaqActivity extends React.Component {
         body: JSON.stringify(rating_data)
       })
 
+      this.setState({ is_submitting_rating: false, show_overlay: true })
+
       console.log('lets rate 2 ', rating_result)
-      
       
     }catch(e) {
       console.log('rating err ', e)
+      this.setState({ is_submitting_rating: false })
     }
 
 

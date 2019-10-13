@@ -60,6 +60,7 @@ class BookingActivity extends React.Component {
       class: 'economy', // economy/business
 
       step: 1,
+      is_loading: false,
 
       // errors
       errors: {
@@ -227,6 +228,16 @@ class BookingActivity extends React.Component {
     let next_btn = <Button onPress={ this.goNext } style={ styles.nav_buttons } mode="outlined" uppercase={false}> Next </Button>
     let cta_btn = null
 
+    let booking_button = (
+      <Button onPress={ this.book } style={ styles.cta_btn } 
+              icon='flight' mode="contained" 
+              uppercase={false}
+              loading={ this.state.is_loading }
+      > 
+      { this.state.is_loading ? 'Wait While We Submit Your Booking' : 'Book Now' } 
+      </Button>
+    )
+
     if( this.state.step == 1 ) {
       show = this.booking_forms()
       prev_btn = null
@@ -238,20 +249,20 @@ class BookingActivity extends React.Component {
                     goToLogin={ this.goToLogin } seeForm={ this.seeForm } 
                 />
       next_btn = null
-      cta_btn = <Button onPress={ this.book } style={ styles.cta_btn } mode="contained" uppercase={false}> Book Now </Button>
+      cta_btn = booking_button
 
     } else if( this.state.step == 3 && this.state.see_form ) {
       show = <UserDetailForm user={this.state.user} 
                             klmOnDataChange={this.userDataChange}
                             errors={this.state.errors.user} />
       next_btn = null
-      cta_btn = <Button onPress={ this.book } style={ styles.cta_btn } mode="contained" uppercase={false}> Book Now </Button>
+      cta_btn = booking_button
     } else {
       show = <UserDetailForm user={this.state.user} 
                             klmOnDataChange={this.userDataChange}
                             errors={this.state.errors.user} />
       next_btn = null
-      cta_btn = <Button onPress={ this.book } style={ styles.cta_btn } mode="contained" uppercase={false}> Book Now </Button>
+      cta_btn = booking_button
     }
 
     

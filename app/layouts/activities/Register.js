@@ -145,13 +145,15 @@ class RegisterActivity extends React.Component {
             <FormErrorDisplay errors={[ this.state.errors.register ]} />
 
             {/** show app loader */}
-            { app_loader }
+            {/* { app_loader } */}
             {/** show app loader */}
 
             {/** register button */}
-            <Button uppercase={false} mode="contained" onPress={ this.register }
+            <Button uppercase={false} mode="contained" 
+                    loading={ this.state.is_loading }
+                    onPress={ this.register }
                     style={{ marginVertical: 40, borderRadius: 24 }}>
-                Register Now
+                { this.state.is_loading ? 'Wait While We Create Your Account' : 'Register Now' }
             </Button>
             {/** register button */}
             
@@ -250,7 +252,7 @@ class RegisterActivity extends React.Component {
         errors.password_confirmation.push('Passwords should be matching')
     }  
     // set errors 
-    this.setState({ errors, is_loading: true })
+    this.setState({ errors })
 
     if( 
         errors.name.length > 0 || errors.email.length > 0 ||
@@ -259,7 +261,7 @@ class RegisterActivity extends React.Component {
         return
     }
     
-
+    this.setState({ is_loading: true })
     try{
 
         let register_result = await fetch(`${Net.SERVER}/api/user`, {
@@ -284,16 +286,16 @@ class RegisterActivity extends React.Component {
             return
         } 
         
-        this.setState({ is_register_successful: true })
+        this.setState({ is_register_successful: true, is_loading: false })
         await AsyncStorage.setItem(Storage.USER, JSON.stringify({
                                 name, email, password, phone, _id: register_result_json.id 
                             }))
        
     }catch(e) {
         console.log(e)
+        this.setState({ is_loading: false })
     }
     
-    this.setState({ is_loading: false })
     
   }// async register() { .. }
 

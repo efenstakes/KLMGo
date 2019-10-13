@@ -39,8 +39,8 @@ class InstructionActivity extends React.Component {
       user: {},
 
       rating_text: '', rating: 4,
-      show_overlay: false
-
+      show_overlay: false,
+      is_submitting_rating: false
     }
     
     this.goToBook = this.goToBook.bind(this)
@@ -148,8 +148,11 @@ class InstructionActivity extends React.Component {
                 />
           {/** rating response */}
 
-          <Button uppercase={false} mode="contained" onPress={ this.submitRating } style={ styles.rating_button }>
-            Rate The Instructions
+          <Button uppercase={false} mode="contained" 
+                  loading={ this.state.is_submitting_rating }
+                  onPress={ this.submitRating } 
+                  style={ styles.rating_button }>
+            { this.state.is_submitting_rating ? 'Submitting Your Rating' : 'Rate The Instructions' }
           </Button>
 
         </View>
@@ -191,7 +194,8 @@ class InstructionActivity extends React.Component {
 
   //  submit rating 
   async submitRating() {
-    this.setState({ show_overlay: true })
+    // this.setState({ show_overlay: true })
+    this.setState({ is_submitting_rating: true })
 
     let service = this.props.navigation.getParam('service') 
     let { rating, rating_text, user } = this.state
@@ -209,7 +213,11 @@ class InstructionActivity extends React.Component {
           body: JSON.stringify(rating_data)
         })
   
-      }catch(e){  }
+        this.setState({ is_submitting_rating: false, show_overlay: true })
+
+      }catch(e){
+        this.setState({ is_submitting_rating: false })
+      }
 
     }// if( !user.hasOwnProperty('password') ) { .. }
 
@@ -250,14 +258,16 @@ class InstructionActivity extends React.Component {
         body: JSON.stringify(rating_data)
       })
 
+      
+      this.setState({ is_submitting_rating: false, show_overlay: true })
+
       console.log('lets rate 2 ', rating_result)
       
       
     }catch(e) {
       console.log('rating err ', e)
+      this.setState({ is_submitting_rating: false })
     }
-
-
 
 
   }// async submitRating() { .. }

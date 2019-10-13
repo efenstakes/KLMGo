@@ -104,13 +104,15 @@ class LoginActivity extends React.Component {
           <FormErrorDisplay errors={[ this.state.errors.login ]} />
 
           {/** show app loader */}
-          { app_loader }
+          {/* { app_loader } */}
           {/** show app loader */}
 
           {/** login button */}
-          <Button uppercase={false} mode="contained" onPress={ this.login }
+          <Button uppercase={false} mode="contained" 
+                  loading={ this.state.is_loading }
+                  onPress={ this.login }
                   style={{ marginVertical: 40, borderRadius: 24 }}>
-              Login Now
+              { this.state.is_loading ? 'Wait While We Log You In' : 'Login Now' } 
           </Button>
           {/** login button */}
 
