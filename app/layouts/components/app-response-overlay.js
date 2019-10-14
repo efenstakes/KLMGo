@@ -14,7 +14,7 @@ export default AppResponseOverlayModal = ({ show_overlay, hideModal, width })=> 
       windowBackgroundColor="rgba(255, 255, 255, .5)"
       overlayBackgroundColor='white'
       onBackdropPress={() => hideModal() }
-      width='72%' height='72%' 
+      width='80%' height='72%' 
     >
       {/** width='48%' height='48%' */}
       <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -27,17 +27,17 @@ export default AppResponseOverlayModal = ({ show_overlay, hideModal, width })=> 
           <Image
             source={ require('../../assets/icons/klm_go_logo.png') }
             style={[ styles.overlay_image, {
-              width: (width/4), 
-              height: (width/4), 
-              borderRadius: (width/8), 
+              width: (width/2), 
+              height: (width/2), 
+              borderRadius: (width/4), 
             } ]}
           />
 
-          <Text style={{ marginTop: '16%', fontSize: 24 }}> 
+          <Text style={{ marginTop: '16%', fontSize: 16 }}> 
             We are always listening 
           </Text>
           
-          <Button mode='contained' uppercase={ true }
+          <Button mode='contained' uppercase={ false }
             style={{ position: 'absolute', bottom: '8%', width: '100%', borderRadius: 24 }}
             onPress={ ()=> hideModal() }> Close </Button>
 

@@ -112,7 +112,7 @@ class LoginActivity extends React.Component {
                   loading={ this.state.is_loading }
                   onPress={ this.login }
                   style={{ marginVertical: 40, borderRadius: 24 }}>
-              { this.state.is_loading ? 'Wait While We Log You In' : 'Login Now' } 
+              { this.state.is_loading ? 'Logging You In' : 'Login Now' } 
           </Button>
           {/** login button */}
 

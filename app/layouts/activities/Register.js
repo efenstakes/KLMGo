@@ -153,7 +153,7 @@ class RegisterActivity extends React.Component {
                     loading={ this.state.is_loading }
                     onPress={ this.register }
                     style={{ marginVertical: 40, borderRadius: 24 }}>
-                { this.state.is_loading ? 'Wait While We Create Your Account' : 'Register Now' }
+                { this.state.is_loading ? 'Creating Your Account' : 'Register Now' }
             </Button>
             {/** register button */}
             

@@ -18,7 +18,7 @@ export default function BookingSuccessOverlayModal ({ show_overlay, hideModal, w
       windowBackgroundColor="rgba(255, 255, 255, .5)"
       overlayBackgroundColor='white'
       onBackdropPress={() => hideModal() }
-      width='72%' height='72%' 
+      width='80%' height='72%' 
     >
       {/** width='80%' height='72%'  */}
         
@@ -35,9 +35,9 @@ export default function BookingSuccessOverlayModal ({ show_overlay, hideModal, w
             <Image
               source={ require('../../assets/icons/klm_go_logo.png') }
               style={[ styles.overlay_image, {
-                width: (width/4), 
-                height: (width/4), 
-                borderRadius: (width/8), 
+                width: (width/2), 
+                height: (width/2), 
+                borderRadius: (width/4), 
               } ]}
             />
 
@@ -47,7 +47,7 @@ export default function BookingSuccessOverlayModal ({ show_overlay, hideModal, w
             <AwesomeIcon name='smile-o' 
                 style={{ alignSelf: 'center', fontSize: 56, color: 'lightblue' }}/>
             
-            <Button mode='contained' uppercase={ true }
+            <Button mode='contained' uppercase={ false }
               style={{ position: 'absolute', bottom: '8%', width: '100%', borderRadius: 24 }}
               onPress={ ()=> hideModal() }> Close </Button>
 

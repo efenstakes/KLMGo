@@ -152,7 +152,7 @@ class InstructionActivity extends React.Component {
                   loading={ this.state.is_submitting_rating }
                   onPress={ this.submitRating } 
                   style={ styles.rating_button }>
-            { this.state.is_submitting_rating ? 'Submitting Your Rating' : 'Rate The Instructions' }
+            { this.state.is_submitting_rating ? 'Making Your Rating' : 'Rate The Instructions' }
           </Button>
 
         </View>

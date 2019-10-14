@@ -175,7 +175,7 @@ class TalkToUsActivity extends React.Component {
                     loading={ this.state.is_submitting_rating }
                     onPress={ this.submitResponse } 
                     style={ styles.response_button }>
-              { this.state.is_submitting_rating ? 'Submitting Your Note' : 'Drop my Note' }
+              { this.state.is_submitting_rating ? 'Dropping Your Note' : 'Drop my Note' }
             </Button>
 
           </View>

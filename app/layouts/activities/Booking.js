@@ -234,7 +234,7 @@ class BookingActivity extends React.Component {
               uppercase={false}
               loading={ this.state.is_loading }
       > 
-      { this.state.is_loading ? 'Wait While We Submit Your Booking' : 'Book Now' } 
+      { this.state.is_loading ? 'Making Your Booking' : 'Book Now' } 
       </Button>
     )
 
